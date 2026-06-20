@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaathSaga - Low-Level Design (LLD) Documentation</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #2c3e50;
+            margin-top: 30px;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .diagram-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            overflow-x: auto;
+        }
+        .architecture-note {
+            background: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .component-description {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .tech-badge {
+            background: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        .toc {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc li {
+            margin: 8px 0;
+        }
+        .toc a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: 500;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .code-block {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        .implementation-detail {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .security-note {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HaathSaga E-Commerce Platform</h1>
+        <h2>Low-Level Design (LLD) Documentation</h2>
+        
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#overview">1. Implementation Overview</a></li>
+                <li><a href="#component-architecture">2. Component Architecture</a></li>
+                <li><a href="#service-layer">3. Service Layer Architecture</a></li>
+                <li><a href="#database-schema">4. Database Schema Design</a></li>
+                <li><a href="#state-management">5. State Management Flow</a></li>
+                <li><a href="#security-implementation">6. Security Implementation</a></li>
+                <li><a href="#api-integration">7. API Integration Patterns</a></li>
+                <li><a href="#caching-strategy">8. Caching Strategy</a></li>
+                <li><a href="#error-handling">9. Error Handling Strategy</a></li>
+            </ul>
+        </div>
+
+        <section id="overview">
+            <h2>1. Implementation Overview</h2>
+            <p>This Low-Level Design (LLD) document provides detailed implementation specifications for HaathSaga e-commerce platform. It covers component architecture, service implementations, database design, state management patterns, and security mechanisms.</p>
+            
+            <div class="tech-stack">
+                <span class="tech-badge">React 19.2.0</span>
+                <span class="tech-badge">Firebase 12.5.0</span>
+                <span class="tech-badge">Vite 6.2.0</span>
+                <span class="tech-badge">Tailwind CSS</span>
+                <span class="tech-badge">Razorpay</span>
+                <span class="tech-badge">Shiprocket</span>
+                <span class="tech-badge">React Router</span>
+                <span class="tech-badge">Context API</span>
+            </div>
+
+            <div class="architecture-note">
+                <strong>Implementation Philosophy:</strong> The system follows a component-based architecture with clear separation of concerns. Firebase provides backend infrastructure while React handles the frontend with Context API for state management. All services are modular and follow dependency injection patterns.
+            </div>
+        </section>
+
+        <section id="component-architecture">
+            <h2>2. Component Architecture</h2>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+                    graph TB
+                        subgraph "App Root"
+                            A[App.jsx]
+                            A1[Router Setup]
+                            A2[Global Providers]
+                            A --> A1
+                            A --> A2
+                        end
+                        
+                        subgraph "Provider Layer"
+                            B[AuthProvider]
+                            C[CartProvider]
+                            D[ProductProvider]
+                            E[CategoryProvider]
+                            F[AdminProvider]
+                            A2 --> B
+                            A2 --> C
+                            A2 --> D
+                            A2 --> E
+                            A2 --> F
+                        end
+                        
+                        subgraph "Layout Components"
+                            G[Header]
+                            H[Footer]
+                            I[Navigation]
+                            J[ToastContainer]
+                        end
+                        
+                        subgraph "Page Components"
+                            K[HomePage]
+                            L[ShopPage]
+                            M[ProductDetailPage]
+                            N[CheckoutPage]
+                            O[AdminDashboardPage]
+                            P[AccountPages]
+                        end
+                        
+                        subgraph "Feature Components"
+                            Q[ProductCard]
+                            R[CartSidebar]
+                            S[WishlistSidebar]
+                            T[PaymentModal]
+                            U[LoginModal]
+                            V[ProductFilters]
+                        end
+                        
+                        subgraph "Admin Components"
+                            W[ProductsManagement]
+                            X[OrdersManagement]
+                            Y[UsersManagement]
+                            Z[CategoriesManagement]
+                        end
+                        
+                        A1 --> K
+                        A1 --> L
+                        A1 --> M
+                        A1 --> N
+                        A1 --> O
+                        A1 --> P
+                        
+                        K --> G
+                        K --> H
+                        L --> G
+                        L --> H
+                        M --> G
+                        M --> H
+                        N --> G
+                        N --> H
+                        O --> G
+                        O --> H
+                        P --> G
+                        P --> H
+                        
+                        L --> Q
+                        L --> V
+                        M --> Q
+                        M --> R
+                        M --> S
+                        
+                        N --> T
+                        K --> U
+                        
+                        O --> W
+                        O --> X
+                        O --> Y
+                        O --> Z
+                        
+                        G --> I
+                        A --> J
+                </div>
+            </div>
+            
+            <div class="component-description">
+                <h4>Component Hierarchy Details</h4>
+                <ul>
+                    <li><strong>App.jsx:</strong> Root component that initializes routing and global providers</li>
+                    <li><strong>Provider Layer:</strong> Context providers that manage global state and services</li>
+                    <li><strong>Layout Components:</strong> Reusable UI components that provide structure</li>
+                    <li><strong>Page Components:</strong> Top-level components for each route</li>
+                    <li><strong>Feature Components:</strong> Reusable components for specific functionality</li>
+                    <li><strong>Admin Components:</strong> Specialized components for administrative functions</li>
+                </ul>
+            </div>
+            
+            <div class="diagram-container">
+                <h4>Props Flow Pattern</h4>
+                <div class="mermaid">
+                    flowchart LR
+                        A[Parent Component] -->|props.data| B[Child Component]
+                        A -->|props.handlers| B
+                        A -->|props.config| B
+                        B -->|callback| A
+                        B -->|events| A
+                        
+                        subgraph "Context Flow"
+                            C[Context Provider] -->|value| D[Consumer Component]
+                            D -->|dispatch| E[Context Reducer]
+                            E -->|state| C
+                        end
+                </div>
+            </div>
+            
+            <div class="implementation-detail">
+                <h4>Component Implementation Patterns</h4>
+                <div class="code-block">
+// Component with Context and Props Pattern
+const ProductCard = ({ product, onAddToCart, onWishlist }) => {
+  const { cart, addToCart } = useCart();
+  const { wishlist, toggleWishlist } = useWishlist();
+  const { user } = useAuth();
+  
+  const handleAddToCart = () => {
+    addToCart(product);
+    onAddToCart?.(product);
+  };
+  
+  const handleWishlist = () => {
+    toggleWishlist(product);
+    onWishlist?.(product);
+  };
+  
+  return (
+    <div className="product-card">
+      <img src={product.image} alt={product.name} />
+      <h3>{product.name}</h3>
+      <p>₹{product.price}</p>
+      <button onClick={handleAddToCart}>Add to Cart</button>
+      <button onClick={handleWishlist}>
+        {wishlist.some(item => item.id === product.id) ? '❤️' : '🤍'}
+      </button>
+    </div>
+  );
+};
+                </div>
+            </div>
+        </section>
+
+        <section id="service-layer">
+            <h2>3. Service Layer Architecture</h2>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+                    graph TB
+                        subgraph "Service Layer"
+                            A[authService.js]
+                            B[productService.js]
+                            C[cartService.js]
+                            D[orderService.js]
+                            E[categoryService.js]
+                            F[couponService.js]
+                            G[userService.js]
+                            H[paymentService.js]
+                            I[emailService.js]
+                            J[rateLimitService.js]
+                        end
+                        
+                        subgraph "Firebase SDK"
+                            K[Firebase Auth]
+                            L[Firestore]
+                            M[Firebase Storage]
+                            N[Firebase Functions]
+                        end
+                        
+                        subgraph "External APIs"
+                            O[Razorpay API]
+                            P[Shiprocket API]
+                            Q[Email Service API]
+                        end
+                        
+                        A --> K
+                        A --> L
+                        B --> L
+                        B --> M
+                        C --> L
+                        D --> L
+                        E --> L
+                        F --> L
+                        G --> L
+                        H --> O
+                        I --> Q
+                        J --> L
+                        
+                        D --> H
+                        D --> I
+                        D --> P
+                </div>
+            </div>
+            
+            <div class="component-description">
+                <h4>Service Layer Responsibilities</h4>
+                <ul>
+                    <li><strong>authService.js:</strong> User authentication, registration, password management</li>
+                    <li><strong>productService.js:</strong> Product CRUD operations, stock management, image handling</li>
+                    <li><strong>cartService.js:</strong> Cart operations, stock validation, wishlist management</li>
+                    <li><strong>orderService.js:</strong> Order processing, status tracking, payment integration</li>
+                    <li><strong>categoryService.js:</strong> Category management, hierarchical organization</li>
+                    <li><strong>couponService.js:</strong> Discount code validation and application</li>
+                    <li><strong>userService.js:</strong> User profile management, search indexing</li>
+                    <li><strong>paymentService.js:</strong> Payment processing, Razorpay integration</li>
+                    <li><strong>emailService.js:</strong> Email notifications, OTP verification</li>
+                    <li><strong>rateLimitService.js:</strong> API rate limiting, abuse prevention</li>
+                </ul>
+            </div>
+            
+            <div class="implementation-detail">
+                <h4>Service Implementation Pattern</h4>
+                <div class="code-block">
+// Service with Error Handling and Rate Limiting
+export const createProduct = async (productData, imageFiles) => {
+  try {
+    // Validate input
+    if (!productData.name || !productData.price) {
+      throw new Error('Product name and price are required');
+    }
+    
+    // Handle image uploads
+    const imageUrls = [];
+    if (imageFiles && imageFiles.length > 0) {
+      for (const file of imageFiles) {
+        const storageRef = ref(storage, `products/${Date.now()}_${file.name}`);
+        await uploadBytes(storageRef, file);
+        const downloadUrl = await getDownloadURL(storageRef);
+        imageUrls.push(downloadUrl);
+      }
+    }
+    
+    // Create product document
+    const productsRef = collection(db, 'products');
+    const newProduct = {
+      ...productData,
+      images: imageUrls,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    
+    const docRef = await addDoc(productsRef, newProduct);
+    return { id: docRef.id, ...newProduct };
+  } catch (error) {
+    console.error('Error creating product:', error);
+    throw new Error(`Failed to create product: ${error.message}`);
+  }
+};
+                </div>
+            </div>
+            
+            <div class="diagram-container">
+                <h4>Error Handling Strategy</h4>
+                <div class="mermaid">
+                    flowchart TD
+                        A[Service Call] --> B{Try-Catch Block}
+                        B -->|Success| C[Return Result]
+                        B -->|Error| D[Log Error]
+                        D --> E{Error Type}
+                        E -->|Validation| F[Return Validation Error]
+                        E -->|Network| G[Return Network Error]
+                        E -->|Permission| H[Return Permission Error]
+                        E -->|Unknown| I[Return Generic Error]
+                        
+                        F --> J[Client Handler]
+                        G --> J
+                        H --> J
+                        I --> J
+                        
+                        J --> K[User Notification]
+                </div>
+            </div>
+        </section>
+
+        <section id="database-schema">
+            <h2>4. Database Schema Design</h2>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+                    erDiagram
+                        USERS {
+                            string uid PK
+                            string email
+                            string displayName
+                            boolean isAdmin
+                            boolean emailVerified
+                            date createdAt
+                            string memberSince
+                            string phone
+                            string profileImage
+                            date lastLoginAt
+                            boolean isActive
+                        }
+                        
+                        PRODUCTS {
+                            string id PK
+                            string name
+                            string description
+                            string category FK
+                            string subcategory
+                            number price
+                            number originalPrice
+                            array images
+                            array sizes
+                            array colors
+                            string fabricDetails
+                            number stock
+                            boolean isActive
+                            boolean isPreOrder
+                            number preOrderStock
+                            date preOrderStartDate
+                            date preOrderEndDate
+                            number preOrderPrice
+                            string expectedShippingDate
+                            number position
+                            date createdAt
+                            date updatedAt
+                        }
+                        
+                        CATEGORIES {
+                            string id PK
+                            string name
+                            string description
+                            string image
+                            boolean isActive
+                            number position
+                            date createdAt
+                            date updatedAt
+                        }
+                        
+                        ORDERS {
+                            string id PK
+                            string userId FK
+                            array items
+                            number subtotal
+                            number shipping
+                            number tax
+                            number discount
+                            number total
+                            object shippingAddress
+                            string status
+                            string paymentStatus
+                            string paymentId
+                            string razorpayOrderId
+                            string promoCode
+                            boolean hasPreOrderItems
+                            string orderNotes
+                            date createdAt
+                            date updatedAt
+                            string trackingNumber
+                            string carrier
+                        }
+                        
+                        CART {
+                            string userId PK
+                            array items
+                            date updatedAt
+                        }
+                        
+                        WISHLIST {
+                            string userId PK
+                            array items
+                            date updatedAt
+                        }
+                        
+                        COUPONS {
+                            string id PK
+                            string code
+                            string description
+                            string discountType
+                            number discountValue
+                            number minOrderAmount
+                            number maxDiscountAmount
+                            number usageLimit
+                            number usedCount
+                            date startDate
+                            date endDate
+                            boolean isActive
+                            date createdAt
+                        }
+                        
+                        ADDRESSES {
+                            string id PK
+                            string userId FK
+                            string name
+                            string phone
+                            string address
+                            string apartment
+                            string city
+                            string state
+                            string postcode
+                            string country
+                            boolean isDefault
+                            date createdAt
+                            date updatedAt
+                        }
+                        
+                        USER_SEARCH_INDEX {
+                            string id PK
+                            string userId FK
+                            string displayName
+                            string email
+                            array searchTerms
+                            boolean isActive
+                            boolean isAdmin
+                            date updatedAt
+                        }
+                        
+                        REVIEWS {
+                            string id PK
+                            string productId FK
+                            string userId FK
+                            number rating
+                            string comment
+                            boolean isVerified
+                            date createdAt
+                            date updatedAt
+                        }
+                        
+                        USERS ||--o{ ORDERS : places
+                        USERS ||--o{ CART : owns
+                        USERS ||--o{ WISHLIST : owns
+                        USERS ||--o{ ADDRESSES : has
+                        USERS ||--o{ USER_SEARCH_INDEX : indexed
+                        USERS ||--o{ REVIEWS : writes
+                        CATEGORIES ||--o{ PRODUCTS : contains
+                        PRODUCTS ||--o{ ORDERS : included
+                        PRODUCTS ||--o{ REVIEWS : receives
+                </div>
+            </div>
+            
+            <div class="component-description">
+                <h4>Detailed Field Definitions</h4>
+                
+                <h5>Products Collection</h5>
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Validation</th>
+                    </tr>
+                    <tr>
+                        <td>id</td>
+                        <td>string</td>
+                        <td>Unique product identifier</td>
+                        <td>Auto-generated</td>
+                    </tr>
+                    <tr>
+                        <td>name</td>
+                        <td>string</td>
+                        <td>Product name</td>
+                        <td>Required, max 100 chars</td>
+                    </tr>
+                    <tr>
+                        <td>price</td>
+                        <td>number</td>
+                        <td>Current selling price</td>
+                        <td>Required, >= 0</td>
+                    </tr>
+                    <tr>
+                        <td>stock</td>
+                        <td>number</td>
+                        <td>Available inventory</td>
+                        <td>Required, >= 0</td>
+                    </tr>
+                    <tr>
+                        <td>isPreOrder</td>
+                        <td>boolean</td>
+                        <td>Pre-order availability flag</td>
+                        <td>Default: false</td>
+                    </tr>
+                    <tr>
+                        <td>preOrderStock</td>
+                        <td>number</td>
+                        <td>Pre-order inventory</td>
+                        <td>Required if isPreOrder=true</td>
+                    </tr>
+                </table>
+                
+                <h5>Orders Collection</h5>
+                <table>
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Validation</th>
+                    </tr>
+                    <tr>
+                        <td>items</td>
+                        <td>array</td>
+                        <td>Order items with snapshots</td>
+                        <td>Required, non-empty</td>
+                    </tr>
+                    <tr>
+                        <td>status</td>
+                        <td>string</td>
+                        <td>Order status</td>
+                        <td>Enum: pending, processing, shipped, delivered, cancelled</td>
+                    </tr>
+                    <tr>
+                        <td>paymentStatus</td>
+                        <td>string</td>
+                        <td>Payment status</td>
+                        <td>Enum: pending, paid, failed, refunded</td>
+                    </tr>
+                    <tr>
+                        <td>hasPreOrderItems</td>
+                        <td>boolean</td>
+                        <td>Contains pre-order items</td>
+                        <td>Auto-calculated</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="implementation-detail">
+                <h4>Indexing Strategy</h4>
+                <div class="code-block">
+// Firestore Indexes Configuration
+{
+  "indexes": [
+    {
+      "collectionGroup": "orders",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "products",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "isPreOrder", "order": "ASCENDING" },
+        { "fieldPath": "preOrderStock", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "userSearchIndex",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "searchTerms", "arrayConfig": "CONTAINS" },
+        { "fieldPath": "isActive", "order": "ASCENDING" }
+      ]
+    }
+  ]
+}
+                </div>
+            </div>
+            
+            <div class="security-note">
+                <h4>Security Rules Implementation</h4>
+                <div class="code-block">
+// Firestore Security Rules
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null && (
+        request.auth.token.email == 'admin@haathsaga.com' ||
+        request.auth.token.email == 'haathsaga.mauryas19@gmail.com'
+      );
+    }
+    
+    match /products/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /orders/{documentId} {
+      allow read: if isAdmin() || (request.auth != null && 
+        request.auth.uid == resource.data.userId);
+      allow create: if request.auth != null && 
+        request.auth.uid == request.resource.data.userId;
+      allow update: if isAdmin() || (request.auth != null && 
+        request.auth.uid == resource.data.userId);
+    }
+  }
+}
+                </div>
+            </div>
+        </section>
+
+        <section id="state-management">
+            <h2>5. State Management Flow</h2>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+                    graph TB
+                        subgraph "Context Providers"
+                            A[AuthProvider]
+                            B[CartProvider]
+                            C[ProductProvider]
+                            D[CategoryProvider]
+                            E[AdminProvider]
+                        end
+                        
+                        subgraph "State Storage"
+                            F[React State]
+                            G[localStorage]
+                            H[Firestore]
+                            I[Cache Layer]
+                        end
+                        
+                        subgraph "State Synchronization"
+                            J[Real-time Listeners]
+                            K[Cache Invalidation]
+                            L[State Persistence]
+                        end
+                        
+                        A --> F
+                        A --> H
+                        A --> J
+                        
+                        B --> F
+                        B --> G
+                        B --> L
+                        
+                        C --> F
+                        C --> H
+                        C --> I
+                        C --> K
+                        
+                        D --> F
+                        D --> H
+                        D --> I
+                        
+                        E --> F
+                        E --> H
+                        
+                        J --> F
+                        K --> I
+                        L --> G
+                </div>
+            </div>
+            
+            <div class="component-description">
+                <h4>Context Implementation Details</h4>
+                
+                <h5>AuthContext</h5>
+                <ul>
+                    <li><strong>State:</strong> user, userData, isLoading</li>
+                    <li><strong>Actions:</strong> signIn, signOut, updateProfile</li>
+                    <li><strong>Persistence:</strong> Firebase Auth session</li>
+                    <li><strong>Real-time:</strong> onAuthStateChanged listener</li>
+                </ul>
+                
+                <h5>CartContext</h5>
+                <ul>
+                    <li><strong>State:</strong> cart items, total, count</li>
+                    <li><strong>Actions:</strong> addToCart, removeFromCart, updateQuantity</li>
+                    <li><strong>Persistence:</strong> localStorage + Firestore</li>
+                    <li><strong>Sync:</strong> Guest to authenticated user migration</li>
+                </ul>
+                
+                <h5>ProductContext</h5>
+                <ul>
+                    <li><strong>State:</strong> products list, loading, error</li>
+                    <li><strong>Actions:</strong> fetchProducts, search, filter</li>
+                    <li><strong>Caching:</strong> 5-minute cache with invalidation</li>
+                    <li><strong>Optimization:</strong> Batch fetching, lazy loading</li>
+                </ul>
+            </div>
+            
+            <div class="implementation-detail">
+                <h4>Context Implementation Pattern</h4>
+                <div class="code-block">
+// ProductContext with Caching and Optimization
+export const ProductProvider = ({ children }) => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  
+  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  
+  const fetchProducts = useCallback(async (options = {}) => {
+    const cacheKey = generateCacheKey(options);
+    
+    // Check cache first
+    const cachedData = getCachedData(cacheKey);
+    if (cachedData) {
+      setProducts(cachedData);
+      return cachedData;
+    }
+    
+    setLoading(true);
+    try {
+      const productsData = await getProductsByFilters(options);
+      setProducts(productsData);
+      setCachedData(cacheKey, productsData);
+      return productsData;
+    } catch (err) {
+      setError(err.message);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  
+  const invalidateCache = useCallback((options = {}) => {
+    invalidateProductCache(options);
+    return fetchProducts({ ...options, forceRefresh: true });
+  }, [fetchProducts]);
+  
+  return (
+    <ProductContext.Provider value={{
+      products,
+      loading,
+      error,
+      fetchProducts,
+      invalidateCache
+    }}>
+      {children}
+    </ProductContext.Provider>
+  );
+};
+                </div>
+            </div>
+            
+            <div class="diagram-container">
+                <h4>Guest to User Migration Pattern</h4>
+                <div class="mermaid">
+                    sequenceDiagram
+                        participant G as Guest User
+                        participant L as localStorage
+                        participant F as Firestore
+                        participant A as Auth Service
+                        
+                        Note over G,A: Guest Shopping Session
+                        G->>L: Add items to cart
+                        L->>L: Store cart locally
+                        
+                        Note over G,A: User Registration/Login
+                        G->>A: Authenticate
+                        A->>A: Create user session
+                        A->>F: Check for existing cart
+                        
+                        alt Existing cart found
+                            F->>A: Return user cart
+                            A->>L: Merge with local cart
+                        else No existing cart
+                            A->>L: Get local cart
+                            A->>F: Create user cart from local
+                        end
+                        
+                        A->>L: Clear local cart
+                        A->>G: Cart synchronized successfully
+                </div>
+            </div>
+            
+            <div class="implementation-detail">
+                <h4>Cache Invalidation Strategy</h4>
+                <div class="code-block">
+// Cache Management Utilities
+const cacheUtils = {
+  // Generate cache key based on parameters
+  generateKey: (type, params = {}) => {
+    const sortedParams = Object.keys(params)
+      .sort()
+      .map(key => `${key}:${params[key]}`)
+      .join('|');
+    return `${type}:${sortedParams}`;
+  },
+  
+  // Invalidate cache patterns
+  invalidatePattern: (pattern) => {
+    const keys = Object.keys(localStorage);
+    keys.forEach(key => {
+      if (key.includes(pattern)) {
+        localStorage.removeItem(key);
+      }
+    });
+  },
+  
+  // Smart cache invalidation
+  invalidateRelated: (type, id) => {
+    switch (type) {
+      case 'product':
+        cacheUtils.invalidatePattern(`products:*`);
+        cacheUtils.invalidatePattern(`category:*`);
+        cacheUtils.invalidatePattern(`search:*`);
+        break;
+      case 'category':
+        cacheUtils.invalidatePattern(`products:*`);
+        cacheUtils.invalidatePattern(`category:*`);
+        break;
+      case 'order':
+        cacheUtils.invalidatePattern(`orders:${id}`);
+        cacheUtils.invalidatePattern(`user:orders:*`);
+        break;
+    }
+  }
+};
+                </div>
+            </div>
+        </section>
+
+        <section id="security-implementation">
+            <h2>6. Security Implementation</h2>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+                    graph TB
+                        subgraph "Authentication Layer"
+                            A[Firebase Auth]
+                            B[OTP Verification]
+                            C[Rate Limiting]
+                            D[Session Management]
+                        end
+                        
+                        subgraph "Authorization Layer"
+                            E[Firestore Rules]
+                            F[Role-Based Access]
+                            G[Data Validation]
+                            H[Audit Logging]
+                        end
+                        
+                        subgraph "Input Validation"
+                            I[Client-Side Validation]
+                            J[Server-Side Validation]
+                            K[Sanitization]
+                            L[Type Checking]
+                        end
+                        
+                        subgraph "Payment Security"
+                            M[Razorpay Integration]
+                            N[PCI Compliance]
+                            O[Webhook Verification]
+                            P[Refund Controls]
+                        end
+                        
+                        A --> E
+                        B --> C
+                        C --> D
+                        D --> F
+                        
+                        E --> G
+                        F --> H
+                        G --> I
+                        
+                        I --> J
+                        J --> K
+                        K --> L
+                        
+                        L --> M
+                        M --> N
+                        N --> O
+                        O --> P
+                </div>
+            </div>
+            
+            <div class="component-description">
+                <h4>Authentication Flow Implementation</h4>
+                
+                <h5>Registration with OTP</h5>
+                <ul>
+                    <li>User submits email and password</li>
+                    <li>System generates and sends OTP via email</li>
+                    <li>User verifies OTP within 10 minutes</li>
+                    <li>Account created with emailVerified flag</li>
+                    <li>User automatically logged in</li>
+                </ul>
+                
+                <h5>Admin Authentication</h5>
+                <ul>
+                    <li>Hardcoded admin emails: haathsaga.mauryas19@gmail.com, admin@haathsaga.com</li>
+                    <li>Fallback database verification for other admin users</li>
+                    <li>Role-based access control in Firestore rules</li>
+                    <li>Admin action logging and audit trails</li>
+                </ul>
+            </div>
+            
+            <div class="security-note">
+                <h4>Rate Limiting Implementation</h4>
+                <div class="code-block">
+// Rate Limiting Service
+class RateLimitService {
+  static checkRateLimit(identifier, action, limit = 5, windowMs = 60000) {
+    const key = `rate_limit:${identifier}:${action}`;
+    const now = Date.now();
+    const windowStart = now - windowMs;
+    
+    // Get existing attempts
+    const attempts = JSON.parse(localStorage.getItem(key) || '[]');
+    
+    // Filter out old attempts
+    const recentAttempts = attempts.filter(timestamp => timestamp > windowStart);
+    
+    // Check if limit exceeded
+    if (recentAttempts.length >= limit) {
+      const oldestAttempt = Math.min(...recentAttempts);
+      const remainingTime = Math.ceil((oldestAttempt + windowMs - now) / 1000);
+      
+      return {
+        allowed: false,
+        remainingTime,
+        message: `Too many attempts. Try again in ${remainingTime} seconds.`
+      };
+    }
+    
+    // Add current attempt
+    recentAttempts.push(now);
+    localStorage.setItem(key, JSON.stringify(recentAttempts));
+    
+    return { allowed: true };
+  }
+  
+  static recordSuccess(identifier, action) {
+    const key = `rate_limit:${identifier}:${action}`;
+    localStorage.removeItem(key);
+  }
+}
+
+// HOC for rate limiting
+export const withRateLimit = (fn, action, getIdentifier) => {
+  return async (...args) => {
+    const identifier = getIdentifier ? getIdentifier(...args) : 'anonymous';
+    const rateLimitResult = RateLimitService.checkRateLimit(identifier, action);
+    
+    if (!rateLimitResult.allowed) {
+      const error = new Error(rateLimitResult.message);
+      error.code = 'RATE_LIMIT_EXCEEDED';
+      error.remainingTime = rateLimitResult.remainingTime;
+      throw error;
+    }
+    
+    try {
+      const result = await fn(...args);
+      RateLimitService.recordSuccess(identifier, action);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  };
+};
+                </div>
+            </div>
+            
+            <div class="implementation-detail">
+                <h4>Data Validation Patterns</h4>
+                <div class="code-block">
+// Input Validation Schema
+const validationSchemas = {
+  product: {
+    name: {
+      required: true,
+      type: 'string',
+      minLength: 1,
+      maxLength: 100,
+      sanitize: true
+    },
+    price: {
+      required: true,
+      type: 'number',
+      min: 0,
+      max: 999999
+    },
+    stock: {
+      required: true,
+      type: 'number',
+      min: 0,
+      integer: true
+    },
+    category: {
+      required: true,
+      type: 'string',
+      enum: ['clothing', 'accessories', 'footwear']
+    }
+  },
+  
+  order: {
+    items: {
+      required: true,
+      type: 'array',
+      minLength: 1,
+      validate: (items) => {
+        return items.every(item => 
+          item.id && 
+          item.quantity > 0 && 
+          item.price >= 0
+        );
+      }
+    },
+    shippingAddress: {
+      required: true,
+      type: 'object',
+      fields: {
+        name: { required: true, type: 'string', minLength: 1 },
+        phone: { required: true, type: 'string', pattern: /^[0-9]{10}$/ },
+        address: { required: true, type: 'string', minLength: 10 }
+      }
+    }
+  }
+};
+
+// Validation Function
+export const validateInput = (data, schema) => {
+  const errors = [];
+  
+  for (const [field, rules] of Object.entries(schema)) {
+    const value = data[field];
+    
+    // Required validation
+    if (rules.required && (value === undefined || value === null || value === '')) {
+      errors.push(`${field} is required`);
+      continue;
+    }
+    
+    // Type validation
+    if (value !== undefined && rules.type && typeof value !== rules.type) {
+      errors.push(`${field} must be of type ${rules.type}`);
+      continue;
+    }
+    
+    // Custom validation
+    if (rules.validate && !rules.validate(value)) {
+      errors.push(`${field} is invalid`);
+    }
+  }
+  
+  return {
+    isValid: errors.length === 0,
+    errors
+  };
+};
+                </div>
+            </div>
+            
+            <div class="diagram-container">
+                <h4>Permission Check Flow</h4>
+                <div class="mermaid">
+                    flowchart TD
+                        A[User Action] --> B{Is Authenticated?}
+                        B -->|No| C[Deny Access]
+                        B -->|Yes| D{Check Resource Ownership}
+                        D -->|Owner| E[Allow Action]
+                        D -->|Not Owner| F{Is Admin?}
+                        F -->|Yes| G[Allow Action]
+                        F -->|No| H[Check Specific Permissions]
+                        H -->|Has Permission| E
+                        H -->|No Permission| C
+                        
+                        C --> I[Log Attempt]
+                        E --> J[Log Action]
+                        I --> K[Return Error]
+                        J --> L[Execute Action]
+                </div>
+            </div>
+        </section>
+
+        <section id="api-integration">
+            <h2>7. API Integration Patterns</h2>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+                    graph TB
+                        subgraph "Payment Integration"
+                            A[Razorpay Service]
+                            B[Order Creation]
+                            C[Payment Processing]
+                            D[Webhook Handling]
+                            E[Refund Processing]
+                        end
+                        
+                        subgraph "Shipping Integration"
+                            F[Shiprocket Service]
+                            G[Order Sync]
+                            H[Shipment Creation]
+                            I[Tracking Updates]
+                            J[Address Validation]
+                        end
+                        
+                        subgraph "Email Integration"
+                            K[Email Service]
+                            L[OTP Sending]
+                            M[Order Notifications]
+                            N[Password Reset]
+                            O[Marketing Emails]
+                        end
+                        
+                        B --> C
+                        C --> D
+                        D --> E
+                        
+                        G --> H
+                        H --> I
+                        I --> J
+                        
+                        L --> M
+                        M --> N
+                        N --> O
+                </div>
+            </div>
+            
+            <div class="component-description">
+                <h4>Razorpay Integration</h4>
+                <ul>
+                    <li><strong>Order Creation:</strong> Create Razorpay order before payment</li>
+                    <li><strong>Payment Processing:</strong> Handle multiple payment methods</li>
+                    <li><strong>Webhook Verification:</strong> Verify payment status via webhooks</li>
+                    <li><strong>Refund Processing:</strong> Automated and manual refunds</li>
+                    <li><strong>Error Handling:</strong> Graceful failure handling with order cancellation</li>
+                </ul>
+            </div>
+            
+            <div class="implementation-detail">
+                <h4>Payment Service Implementation</h4>
+                <div class="code-block">
+// Razorpay Payment Service
+export const processPayment = async (orderData, paymentMethod) => {
+  try {
+    // Create Razorpay order
+    const razorpayOrder = await createRazorpayOrder({
+      amount: orderData.total * 100, // Convert to paise
+      currency: 'INR',
+      receipt: orderData.id,
+      notes: {
+        orderId: orderData.id,
+        userId: orderData.userId
+      }
+    });
+    
+    // Update order with Razorpay order ID
+    await updateOrder(orderData.id, {
+      razorpayOrderId: razorpayOrder.id,
+      paymentStatus: 'pending'
+    });
+    
+    // Return payment options
+    return {
+      orderId: razorpayOrder.id,
+      amount: razorpayOrder.amount,
+      currency: razorpayOrder.currency,
+      key: process.env.RAZORPAY_KEY_ID,
+      options: {
+        method: paymentMethod,
+        handler: async (response) => {
+          // Verify payment signature
+          const isValid = await verifyPaymentSignature(response);
+          if (isValid) {
+            await updateOrder(orderData.id, {
+              paymentStatus: 'paid',
+              paymentId: response.razorpay_payment_id,
+              status: 'processing'
+            });
+            
+            // Trigger order processing
+            await processOrderAfterPayment(orderData.id);
+          }
+        }
+      }
+    };
+  } catch (error) {
+    console.error('Payment processing error:', error);
+    throw new Error('Payment processing failed');
+  }
+};
+
+// Webhook Handler
+export const handleRazorpayWebhook = async (webhookData) => {
+  const signature = webhookData.headers['x-razorpay-signature'];
+  const isValid = verifyWebhookSignature(webhookData.body, signature);
+  
+  if (!isValid) {
+    throw new Error('Invalid webhook signature');
+  }
+  
+  const event = JSON.parse(webhookData.body);
+  
+  switch (event.event) {
+    case 'payment.captured':
+      await handlePaymentSuccess(event.payload.payment.entity);
+      break;
+    case 'payment.failed':
+      await handlePaymentFailure(event.payload.payment.entity);
+      break;
+    case 'refund.processed':
+      await handleRefundProcessed(event.payload.refund.entity);
+      break;
+  }
+};
+                </div>
+            </div>
+            
+            <div class="component-description">
+                <h4>Shiprocket Integration</h4>
+                <ul>
+                    <li><strong>Authentication:</strong> OAuth2 token-based authentication</li>
+                    <li><strong>Order Sync:</strong> Automatic order synchronization</li>
+                    <li><strong>Shipment Creation:</strong> Bulk and individual shipment creation</li>
+                    <li><strong>Tracking:</strong> Real-time tracking updates</li>
+                    <li><strong>Address Validation:</strong> Pincode and address validation</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="caching-strategy">
+            <h2>8. Caching Strategy</h2>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+                    graph TB
+                        subgraph "Cache Layers"
+                            A[Browser Cache]
+                            B[Memory Cache]
+                            C[localStorage Cache]
+                            D[Service Worker Cache]
+                        end
+                        
+                        subgraph "Cache Types"
+                            E[Product Data]
+                            F[Category Data]
+                            G[User Preferences]
+                            H[Static Assets]
+                        end
+                        
+                        subgraph "Cache Strategies"
+                            I[Time-Based Expiration]
+                            J[Event-Based Invalidation]
+                            K[Version-Based Updates]
+                            L[Size-Based Eviction]
+                        end
+                        
+                        A --> H
+                        B --> E
+                        C --> F
+                        C --> G
+                        D --> H
+                        
+                        E --> I
+                        F --> J
+                        G --> K
+                        H --> L
+                </div>
+            </div>
+            
+            <div class="component-description">
+                <h4>Cache Implementation Details</h4>
+                
+                <h5>Product Caching</h5>
+                <ul>
+                    <li><strong>Cache Duration:</strong> 5 minutes for product lists</li>
+                    <li><strong>Invalidation:</strong> On product updates, stock changes</li>
+                    <li><strong>Storage:</strong> localStorage with compression</li>
+                    <li><strong>Strategy:</strong> Cache-first with network fallback</li>
+                </ul>
+                
+                <h5>Image Caching</h5>
+                <ul>
+                    <li><strong>Cache Duration:</strong> 30 days for static images</li>
+                    <li><strong>Invalidation:</strong> Version-based URL updates</li>
+                    <li><strong>Storage:</strong> Service worker cache</li>
+                    <li><strong>Strategy:</strong> Lazy loading with progressive enhancement</li>
+                </ul>
+            </div>
+            
+            <div class="implementation-detail">
+                <h4>Cache Utility Implementation</h4>
+                <div class="code-block">
+// Advanced Cache Management
+class CacheManager {
+  constructor() {
+    this.memoryCache = new Map();
+    this.cacheConfig = {
+      products: { ttl: 300000, maxSize: 50 }, // 5 minutes, 50 items
+      categories: { ttl: 600000, maxSize: 20 }, // 10 minutes, 20 items
+      user: { ttl: 900000, maxSize: 10 } // 15 minutes, 10 items
+    };
+  }
+  
+  // Set cache with TTL and size limits
+  set(key, data, type = 'products') {
+    const config = this.cacheConfig[type];
+    if (!config) return false;
+    
+    // Check size limit
+    if (this.memoryCache.size >= config.maxSize) {
+      // Remove oldest item
+      const firstKey = this.memoryCache.keys().next().value;
+      this.memoryCache.delete(firstKey);
+    }
+    
+    const cacheItem = {
+      data,
+      timestamp: Date.now(),
+      ttl: config.ttl,
+      type
+    };
+    
+    this.memoryCache.set(key, cacheItem);
+    
+    // Also persist to localStorage for larger data
+    if (type === 'products') {
+      try {
+        localStorage.setItem(`cache_${key}`, JSON.stringify(cacheItem));
+      } catch (e) {
+        console.warn('localStorage quota exceeded');
+      }
+    }
+    
+    return true;
+  }
+  
+  // Get cache with expiration check
+  get(key) {
+    // Check memory cache first
+    let cacheItem = this.memoryCache.get(key);
+    
+    if (!cacheItem) {
+      // Fallback to localStorage
+      try {
+        const stored = localStorage.getItem(`cache_${key}`);
+        if (stored) {
+          cacheItem = JSON.parse(stored);
+          // Restore to memory cache
+          this.memoryCache.set(key, cacheItem);
+        }
+      } catch (e) {
+        console.warn('Error reading from localStorage:', e);
+      }
+    }
+    
+    if (!cacheItem) return null;
+    
+    // Check expiration
+    if (Date.now() - cacheItem.timestamp > cacheItem.ttl) {
+      this.delete(key);
+      return null;
+    }
+    
+    return cacheItem.data;
+  }
+  
+  // Delete cache from all layers
+  delete(key) {
+    this.memoryCache.delete(key);
+    localStorage.removeItem(`cache_${key}`);
+  }
+  
+  // Invalidate by pattern
+  invalidatePattern(pattern) {
+    const keys = Array.from(this.memoryCache.keys());
+    keys.forEach(key => {
+      if (key.includes(pattern)) {
+        this.delete(key);
+      }
+    });
+    
+    // Clear localStorage items
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key.startsWith('cache_') && key.includes(pattern)) {
+        localStorage.removeItem(key);
+      }
+    }
+  }
+}
+
+export const cacheManager = new CacheManager();
+                </div>
+            </div>
+        </section>
+
+        <section id="error-handling">
+            <h2>9. Error Handling Strategy</h2>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+                    flowchart TD
+                        A[Error Occurrence] --> B{Error Type}
+                        B -->|Network Error| C[Retry Logic]
+                        B -->|Validation Error| D[User Feedback]
+                        B -->|Permission Error| E[Redirect to Login]
+                        B -->|Server Error| F[Fallback UI]
+                        B -->|Unknown Error| G[Generic Handler]
+                        
+                        C --> H{Retry Attempts}
+                        H -->|< 3| I[Exponential Backoff]
+                        H -->|>= 3| J[Show Error Message]
+                        I --> K[Retry Request]
+                        K -->|Success| L[Resume Operation]
+                        K -->|Failure| H
+                        
+                        D --> M[Field Highlight]
+                        E --> N[Save Redirect URL]
+                        F --> O[Show Offline Mode]
+                        G --> P[Log to Console]
+                        
+                        J --> Q[Contact Support]
+                        M --> R[User Correction]
+                        N --> S[Login Page]
+                        O --> T[Limited Functionality]
+                        P --> U[Error Report]
+                </div>
+            </div>
+            
+            <div class="component-description">
+                <h4>Error Categories and Handling</h4>
+                
+                <h5>Network Errors</h5>
+                <ul>
+                    <li><strong>Detection:</strong> Fetch failures, timeout errors</li>
+                    <li><strong>Strategy:</strong> Exponential backoff with 3 retry attempts</li>
+                    <li><strong>Fallback:</strong> Show cached data if available</li>
+                    <li><strong>User Feedback:</strong> "Connection lost, retrying..."</li>
+                </ul>
+                
+                <h5>Validation Errors</h5>
+                <ul>
+                    <li><strong>Detection:</strong> Form validation failures</li>
+                    <li><strong>Strategy:</strong> Real-time field validation</li>
+                    <li><strong>Fallback:</strong> Highlight invalid fields</li>
+                    <li><strong>User Feedback:</strong> Specific error messages per field</li>
+                </ul>
+                
+                <h5>Permission Errors</h5>
+                    <li><strong>Detection:</strong> 401/403 responses</li>
+                    <li><strong>Strategy:</strong> Redirect to login with return URL</li>
+                    <li><strong>Fallback:</strong> Show login modal</li>
+                    <li><strong>User Feedback:</strong> "Please login to continue"</li>
+                </ul>
+            </div>
+            
+            <div class="implementation-detail">
+                <h4>Error Boundary Implementation</h4>
+                <div class="code-block">
+// React Error Boundary
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { 
+      hasError: false, 
+      error: null, 
+      errorInfo: null,
+      retryCount: 0
+    };
+  }
+  
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+  
+  componentDidCatch(error, errorInfo) {
+    this.setState({
+      error,
+      errorInfo
+    });
+    
+    // Log error to monitoring service
+    this.logError(error, errorInfo);
+  }
+  
+  logError = (error, errorInfo) => {
+    const errorData = {
+      message: error.message,
+      stack: error.stack,
+      componentStack: errorInfo.componentStack,
+      timestamp: new Date().toISOString(),
+      userAgent: navigator.userAgent,
+      url: window.location.href
+    };
+    
+    // Send to error logging service
+    console.error('Application Error:', errorData);
+    
+    // Could integrate with services like Sentry
+    // Sentry.captureException(error, { extra: errorInfo });
+  };
+  
+  handleRetry = () => {
+    if (this.state.retryCount < 3) {
+      this.setState(prevState => ({
+        hasError: false,
+        error: null,
+        errorInfo: null,
+        retryCount: prevState.retryCount + 1
+      }));
+    }
+  };
+  
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="error-boundary">
+          <h2>Something went wrong</h2>
+          <p>We're sorry, but something unexpected happened.</p>
+          
+          {this.state.retryCount < 3 ? (
+            <button onClick={this.handleRetry}>
+              Try Again ({3 - this.state.retryCount} attempts left)
+            </button>
+          ) : (
+            <div>
+              <p>Please refresh the page or contact support if the problem persists.</p>
+              <button onclick="window.location.reload()">
+                Refresh Page
+              </button>
+            </div>
+          )}
+          
+          {process.env.NODE_ENV === 'development' && (
+            <details style="margin-top: 20px;">
+              <summary>Error Details</summary>
+              <pre>{this.state.error && this.state.error.toString()}</pre>
+              <pre>{this.state.errorInfo.componentStack}</pre>
+            </details>
+          )}
+        </div>
+      );
+    }
+    
+    return this.props.children;
+  }
+}
+
+// Global Error Handler
+window.addEventListener('error', (event) => {
+  console.error('Global Error:', event.error);
+  // Handle unhandled errors
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('Unhandled Promise Rejection:', event.reason);
+  // Handle unhandled promise rejections
+});
+                </div>
+            </div>
+        </section>
+
+        <div class="container" style="margin-top: 50px; text-align: center;">
+            <h2>Conclusion</h2>
+            <p>This Low-Level Design document provides comprehensive implementation details for the HaathSaga e-commerce platform. The architecture emphasizes modularity, scalability, and maintainability through clear separation of concerns, robust error handling, and efficient caching strategies.</p>
+            
+            <p style="margin-top: 30px;"><strong>Document Version:</strong> 1.0</p>
+            <p><strong>Last Updated:</strong> January 2025</p>
+            <p><strong>Author:</strong> Architecture Team</p>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            },
+            erDiagram: {
+                useMaxWidth: true,
+                htmlLabels: true
+            },
+            sequenceDiagram: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+    </script>
+</body>
+</html>

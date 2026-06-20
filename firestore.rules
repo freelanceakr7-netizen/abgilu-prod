@@ -1,0 +1,87 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Robust admin check: check if user is an admin by email or Firestore document
+    function isAdmin() {
+      return request.auth != null && (
+        request.auth.token.email.lower() in ['admin@angilu.com', 'saiswaroop.mukkanti1999@gmail.com', 'manikantas0180@gmail.com', 'angilu.info@gmail.com'] ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true)
+      );
+    }
+    
+    // Products collection - public read access, admin write access
+    match /products/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // Orders collection - authenticated users can access their own orders, admin can access all
+    match /orders/{documentId} {
+      allow read: if isAdmin() || (request.auth != null && (
+        request.auth.uid == resource.data.userId ||
+        request.auth.uid == documentId
+      ));
+      allow create: if request.auth != null &&
+        request.auth.uid == request.resource.data.userId;
+      allow update: if isAdmin() || (request.auth != null && (
+        request.auth.uid == resource.data.userId ||
+        request.auth.uid == request.resource.data.userId
+      ));
+    }
+    
+    // Users collection - users can access their own data, admin can access all
+    match /users/{documentId} {
+      allow read: if isAdmin() || (request.auth != null && request.auth.uid == documentId);
+      allow write: if isAdmin() || (request.auth != null && request.auth.uid == documentId);
+    }
+    
+    // Carts collection - user-specific access, admin can access all
+    match /carts/{userId} {
+      allow read, write: if isAdmin() || (request.auth != null && request.auth.uid == userId);
+    }
+    
+    // Wishlists collection - user-specific access, admin can access all
+    match /wishlists/{userId} {
+      allow read, write: if isAdmin() || (request.auth != null && request.auth.uid == userId);
+    }
+    
+    // Addresses collection - user-specific access, admin can access all
+    match /addresses/{userId} {
+      allow read, write: if isAdmin() || (request.auth != null && request.auth.uid == userId);
+    }
+    
+    // Coupons collection - public read access for validation, limited write access for applying coupons
+    match /coupons/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin() || (request.auth != null &&
+        request.resource.data.usedCount == resource.data.usedCount + 1 &&
+        request.resource.data.keys().hasAll(['usedCount', 'updatedAt'])
+      );
+    }
+    
+    // Categories collection - public read access, admin write access
+    match /categories/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // OTPs collection - allow create and read for anyone (for email verification)
+    match /otps/{email} {
+      allow create: if true;
+      allow read: if true;
+      allow update: if true;
+    }
+
+    // App & Site settings (storefront) - public read, admin write
+    match /appSettings/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /settings/{documentId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+  }
+}

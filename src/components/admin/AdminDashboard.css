@@ -1,0 +1,190 @@
+/* Admin Dashboard Container - Fix for fixed navbar */
+.admin-dashboard-container {
+  padding-top: 120px; /* Account for fixed navbar height */
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Headings - Use Playfair Display like ShopPage */
+.admin-dashboard-container h1,
+.admin-dashboard-container h2,
+.admin-dashboard-container h3,
+.admin-dashboard-container h4,
+.admin-dashboard-container h5,
+.admin-dashboard-container h6 {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Responsive padding for different screen sizes */
+@media (max-width: 1024px) {
+  .admin-dashboard-container {
+    padding-top: 100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-dashboard-container {
+    padding-top: 90px;
+  }
+}
+
+/* Ensure content doesn't overlap with navbar */
+.admin-dashboard-content {
+  position: relative;
+  z-index: 10;
+}
+
+/* Tab navigation container */
+.tab-navigation-container {
+  margin-bottom: 2rem;
+}
+
+/* Dashboard stats cards */
+.dashboard-stats {
+  margin-bottom: 2rem;
+}
+
+/* Modal z-index fixes */
+.admin-modal {
+  z-index: 100;
+}
+
+/* Table container with proper spacing */
+.table-container {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+/* Form inputs styling */
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #C9B48A;
+  border-radius: 0.5rem;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #6B0F10;
+  box-shadow: 0 0 0 3px rgba(107, 15, 16, 0.1);
+}
+
+/* Button styling consistency */
+.admin-button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.admin-button-primary {
+  background-color: #6B0F10;
+  color: #F5EDD8;
+}
+
+.admin-button-primary:hover {
+  background-color: #4c0e0e;
+}
+
+.admin-button-danger {
+  background-color: #7A1215;
+  color: #F5EDD8;
+}
+
+.admin-button-danger:hover {
+  background-color: #4c0e0e;
+}
+
+.admin-button-secondary {
+  background-color: #e4c8a5;
+  color: #5C1010;
+}
+
+.admin-button-secondary:hover {
+  background-color: #E8D5B0;
+}
+
+/* Card styling */
+.admin-card {
+  background: #e4c8a5;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+/* Status badges */
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge-success {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge-warning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge-danger {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.status-badge-info {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+/* Loading spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid #C9B48A;
+  border-top-color: #6B0F10;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+  .responsive-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+/* Dark mode support - Sync with class-based theme configuration */
+.dark .admin-card {
+  background: #4c0e0e;
+  color: #F5EDD8;
+}
+
+.dark .form-input {
+  background-color: #7A1215;
+  border-color: #6B0F10;
+  color: #F5EDD8;
+}
+
+.dark .admin-button-secondary {
+  background-color: #7A1215;
+  color: #F5EDD8;
+}
+
+.dark .admin-button-secondary:hover {
+  background-color: #6B0F10;
+}

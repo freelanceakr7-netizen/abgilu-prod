@@ -1,0 +1,250 @@
+@import "tailwindcss";
+
+/* Global Styles for ANGILU */
+
+/* Color Palette - Minimal Monochrome Luxury */
+:root {
+  --indigo: #4C0E0E;      /* Main Brand Colour (Dark marron) */
+  --indigo-dark: #4C0E0E; /* Footer Background */
+  --terracotta: #6B0F10;  /* Secondary Brand colour (Dark marron) */
+  --terracotta-light: #7A1215;
+  --kora: #F0E1C6;        /* Main background colour (Matt Beige) */
+  --kora-dark: #E6D5B8;   /* Matching Darker Shade */
+  --kora-light: #F0E1C6;  /* Beige blend (Soft beige) */
+  --gold: #C9B48A;        /* Border/Accent Gold */
+}
+
+/* Utility Classes */
+.bg-kora { background-color: var(--kora); }
+.bg-kora-light { background-color: var(--kora-light); }
+.bg-indigo { background-color: var(--indigo); }
+.text-indigo { color: var(--indigo); }
+.text-kora { color: var(--kora); }
+.text-kora-light { color: var(--kora-light); }
+.text-terracotta { color: var(--terracotta); }
+
+/* Global Body Styles */
+body {
+  background-color: var(--kora);
+  color: var(--indigo);
+  font-family: 'Poppins', sans-serif;
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+/* Font Families */
+.font-serif {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-sans {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Logo Font */
+.logo-font {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Background Textures removed for clean minimal look */
+
+/* Ornate Border Styles minimized */
+.ornate-border {
+  position: relative;
+  background: var(--kora);
+}
+
+.ornate-inner-border {
+  display: none;
+}
+
+/* Arch Shape using Clip-Path */
+.arch-clip {
+  clip-path: path('M0,1000 V200 C0,50 150,0 500,0 C850,0 1000,50 1000,200 V1000 H0 Z');
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--kora);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 10px;
+}
+
+/* Simple animations */
+.fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom scrollbar hide class */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Global Button Style - Sharp Edges & Maroon Brand */
+button, .btn, a.btn {
+  border-radius: 0 !important;
+}
+
+/* Ensure Category Cards keep their radius */
+.category-card, [class*="Category"] .rounded-\[1\.2rem\] {
+  border-radius: 1.2rem !important;
+}
+
+/* ─── Toast & Entry Animations ─── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Base button theme */
+.btn-primary {
+  background-color: var(--indigo);
+  color: var(--kora);
+  border-radius: 0;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--terracotta);
+}
+
+/* ─── Premium Slide-Fill Button (Slowtide Style) ─── */
+.btn-slide {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 !important;
+  cursor: pointer;
+  transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.btn-slide::after {
+  content: '';
+  position: absolute;
+  bottom: -105%;
+  left: 0;
+  width: 100%;
+  height: 115%;
+  background-color: var(--terracotta);
+  transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+.btn-slide:hover::after {
+  bottom: 0;
+}
+
+.btn-slide-light::after {
+  background-color: var(--kora-dark);
+}
+
+.btn-slide-light:hover {
+  color: var(--indigo);
+}
+
+.btn-slide-outline {
+  background: transparent;
+  border: 1px solid var(--indigo);
+  color: var(--indigo);
+}
+.btn-slide-outline::after {
+  background-color: var(--indigo);
+}
+.btn-slide-outline:hover {
+  color: var(--kora);
+}
+
+/* ─── Product Detail Page Accordion ─── */
+.pdp-accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 0;
+  cursor: pointer;
+  border-top: 1px solid rgba(76, 14, 14, 0.12);
+  user-select: none;
+}
+
+.pdp-accordion-header:hover .pdp-accordion-icon {
+  transform: scaleY(1.3);
+}
+
+.pdp-accordion-icon {
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.pdp-accordion-content {
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+  opacity: 1;
+}
+
+.pdp-accordion-content.closed {
+  max-height: 0;
+  opacity: 0;
+}
+
+/* ─── Image Gallery Thumbnail Active ─── */
+.pdp-thumb-active {
+  outline: 2px solid var(--indigo);
+  outline-offset: 2px;
+}
+
+/* ─── 8px Spacing Utility ─── */
+:root {
+  --sp-1: 8px;
+  --sp-2: 16px;
+  --sp-3: 24px;
+  --sp-4: 32px;
+  --sp-5: 40px;
+  --sp-6: 48px;
+  --sp-8: 64px;
+  --sp-10: 80px;
+  --sp-12: 96px;
+
+  /* Typography scale (8pt grid) */
+  --text-xs: 12px;   /* lh: 16px */
+  --text-sm: 14px;   /* lh: 20px */
+  --text-base: 16px; /* lh: 24px */
+  --text-lg: 20px;   /* lh: 28px */
+  --text-xl: 24px;   /* lh: 32px */
+  --text-2xl: 32px;  /* lh: 40px */
+  --text-3xl: 40px;  /* lh: 48px */
+  --text-4xl: 48px;  /* lh: 56px */
+}
+

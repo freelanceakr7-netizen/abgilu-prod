@@ -1,0 +1,125 @@
+1. Logo
+
+Note to Designer: "Please ensure the brush strokes in the monogram are preserved. The 'H' and 'S' should feel like organic thread or twigs, not vector shapes."
+
+2. Business Name
+Name: Haath Saga
+
+Tagline: The Story of Hands. (Or: Contemporary Craft, Custom Fit.)
+
+3. About the Company (Brand Story)
+(Pep has written this to be expandable. This text establishes the "Cultural Custodian" and "Vizag" roots.)
+
+Haath Saga: The Story of Hands
+
+In an era defined by mass production and standard sizes, Haath Saga was born from a simple question: Why should you fit the garment, when the garment was meant to fit you?
+
+Our Origins: Born by the Bay Rooted in the coastal heritage of Visakhapatnam (Vizag), Haath Saga is not just a clothing label; it is a dialogue between the rugged earth and the deep sea. Our aesthetic draws from the textures of our home—the jagged red rocks of the coastline, the golden sands of R.K. Beach, and the unbleached purity of the ocean breeze. We bridge the gap between the ancient loom and the modern wardrobe, bringing the "Slow Fashion" philosophy to the fast-paced life of the modern Indian woman.
+
+The Philosophy: Affordable Heirloom We believe that luxury is not about a logo; it is about the hands that touch the fabric before you do. Every piece in our collection tells a story—from the rhythmic thak-thak of the Kalamkari block printer in Pedana to the silent focus of our Masterji cutting the fabric to your precise measurements. We work directly with artisan clusters across India, reviving heritage weaves like Mangalagiri, Chanderi, and Hand-Block Kalamkari, and translating them into contemporary silhouettes that command the boardroom as easily as they grace a wedding.
+
+The Process: The Atelier Approach Unlike standard retailers who force you into a box of 'S', 'M', or 'L', Haath Saga operates on an Atelier model. We understand that the Indian body type is diverse and beautiful. Our signature "Custom Fit" service ensures that whether you are purchasing a daily-wear Kurta or a festive Lehenga, it is tailored to drape around your unique shape, not a mannequin's.
+
+Our Promise
+
+Authenticity: No screen prints masquerading as hand-blocks. We honor the imperfections of the human hand.
+
+Sustainability: We use breathable, natural fabrics that age gracefully.
+
+Empowerment: We support the livelihoods of second-generation weavers and local tailors in Vizag.
+
+Welcome to Haath Saga. Wear your heritage. Wear yourself.
+
+4. Images
+
+
+5. Colour Codes (The Vizag Palette)
+(Pep’s curated palette for Web & Print)
+
+Deep Indigo (Primary): #1F305E (The Sea / Ink)
+
+Rust Terracotta (Secondary): #CC5500 (The Earth / Rocks)
+
+Unbleached Kora (Background): #F5F5DC (Sand / Raw Cotton)
+
+Temple Gold (Accent): #C5A059 (Jewelry / Luxury details)
+
+6. List of Services Categories
+The Heritage Edit: (Sarees & Unstitched Fabrics)
+
+The Signature Line: (Ready-to-Wear Kurtas & Sets)
+
+The Custom Atelier: (Made-to-Measure Lehengas & Anarkalis)
+
+Trousseau & Gifting: (Wedding Packing & Bulk Orders - Future Phase)
+
+7. Details About Each Service
+The Heritage Edit: Curated handloom sarees sourced directly from weaver clusters in different parts India. Focusing on pure cottons, silk-cottons, and natural dyes.
+
+The Signature Line: Pre-designed collections released in "Drops." Featuring functional pockets, breathable linings, and office-appropriate cuts. Available in standard sizes.
+
+The Custom Atelier: Our premium service. Clients select a fabric and silhouette, provide specific body measurements, and receive a garment stitched exclusively for them. Includes "Marginal Adjustments" guarantee.
+
+8. Phone, Email, Address
+Phone: +91 
+
+Email: haathsaga.mauryas19@gmail.com
+
+Address: Haath Saga Studio, 1-82-5, plot 162, sector 4, MVP colony, Visakhapatnam - 530017
+
+
+9. Google Map Location Link
+
+
+10. Social Media Links
+Instagram:
+
+Facebook: 
+
+YouTube: 
+
+LinkedIn:
+
+11. Design Reference / Sample Websites
+
+Nicobar.com: For the clean, island/coastal aesthetic and "Story" sections.
+
+RawMango.com: For the minimalist luxury feel and focus on visual storytelling.
+
+GoodEarth.in: For the way they describe "Heritage" and "Culture."
+
+
+
+
+reminder before last , 2 emi
+multiple loans
+edit in grop
+
+als are:
+
+Email:	
+Password: admin123456
+With these credentials, yo
+haathsaga.mauryas19@gmail.com admin123456
+
+There's a folder "clone" , take the Single product page from there and use the same kind of product product page in our project
+take styles , fonts , colors , everything
+
+
+There's a folder "clone" , take the checkout page from there and create the same checkout page
+take styles , fonts , colors , everything, 
+
+q6ENruxoZ*~ info@haathsaga.com , please configure mail with this , update the firebase and redeploy them
+
+/shipping-policy ,take the styles from returns-policy page , font , color and details from footer and update this
+
+I need exact checkout page
+
+Take the refernce of the home page for the font ,styles 
+and modify the dashboard page and the tabs of the dashboard as well
+
+
+
+API Email : test@athenweb.in
+
+API Password : g@$5uD8kXyZ4v&YD

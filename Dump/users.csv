@@ -1,0 +1,3 @@
+uid,email,emailVerified,displayName,passwordHash,salt
+admin001,admin@haathsaga.com,true,Admin User,VGVzdFBhc3N3b3JkMTIz,bWFuYWdlZHNhbHQ=
+test001,test@haathsaga.com,true,Test User,VGVzdFBhc3N3b3JkMTIz,bWFuYWdlZHNhbHQ=

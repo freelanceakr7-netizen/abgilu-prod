@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "localId": "admin001",
+      "email": "admin@haathsaga.com",
+      "emailVerified": true,
+      "displayName": "Admin User",
+      "passwordHash": "VGVzdFBhc3N3b3JkMTIz", 
+      "salt": "bWFuYWdlZHNhbHQ=",
+      "providerUserInfo": [
+        {
+          "providerId": "password",
+          "displayName": "Admin User",
+          "email": "admin@haathsaga.com",
+          "rawId": "admin001"
+        }
+      ]
+    },
+    {
+      "localId": "test001",
+      "email": "test@haathsaga.com",
+      "emailVerified": true,
+      "displayName": "Test User",
+      "passwordHash": "VGVzdFBhc3N3b3JkMTIz",
+      "salt": "bWFuYWdlZHNhbHQ=",
+      "providerUserInfo": [
+        {
+          "providerId": "password",
+          "displayName": "Test User",
+          "email": "test@haathsaga.com",
+          "rawId": "test001"
+        }
+      ]
+    }
+  ]
+}

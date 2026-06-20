@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaathSaga - High-Level Design (HLD) Documentation</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #2c3e50;
+            margin-top: 30px;
+        }
+        h1 {
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .diagram-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            overflow-x: auto;
+        }
+        .architecture-note {
+            background: #e8f4fd;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .component-description {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .tech-badge {
+            background: #3498db;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        .toc {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc li {
+            margin: 8px 0;
+        }
+        .toc a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: 500;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HaathSaga E-Commerce Platform</h1>
+        <h2>High-Level Design (HLD) Documentation</h2>
+        
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#overview">1. System Overview</a></li>
+                <li><a href="#architecture">2. System Architecture</a></li>
+                <li><a href="#data-architecture">3. Data Architecture</a></li>
+                <li><a href="#authentication">4. Authentication Flow</a></li>
+                <li><a href="#ecommerce-flow">5. E-Commerce Flow</a></li>
+                <li><a href="#admin-system">6. Admin System Architecture</a></li>
+                <li><a href="#technical-decisions">7. Technical Decisions</a></li>
+                <li><a href="#scalability">8. Scalability Considerations</a></li>
+                <li><a href="#security">9. Security Considerations</a></li>
+            </ul>
+        </div>
+
+        <section id="overview">
+            <h2>1. System Overview</h2>
+            <p>HaathSaga is a modern e-commerce platform built with React and Firebase, specializing in fashion apparel. The platform provides a complete shopping experience from product browsing to order management, with robust admin capabilities and third-party integrations.</p>
+            
+            <div class="tech-stack">
+                <span class="tech-badge">React 19.2.0</span>
+                <span class="tech-badge">Firebase 12.5.0</span>
+                <span class="tech-badge">Vite 6.2.0</span>
+                <span class="tech-badge">Tailwind CSS</span>
+                <span class="tech-badge">Razorpay</span>
+                <span class="tech-badge">Shiprocket</span>
+                <span class="tech-badge">React Router</span>
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2>2. System Architecture</h2>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+                    graph TB
+                        subgraph "Client Layer"
+                            A[React SPA]
+                            A1[Header Component]
+                            A2[Product Pages]
+                            A3[Cart System]
+                            A4[Checkout Flow]
+                            A5[Admin Dashboard]
+                            A --> A1
+                            A --> A2
+                            A --> A3
+                            A --> A4
+                            A --> A5
+                        end
+                        
+                        subgraph "State Management"
+                            B[React Context API]
+                            B1[AuthContext]
+                            B2[CartContext]
+                            B3[AdminContext]
+                            B4[ProductContext]
+                            B5[CategoryContext]
+                            B --> B1
+                            B --> B2
+                            B --> B3
+                            B --> B4
+                            B --> B5
+                        end
+                        
+                        subgraph "Firebase Backend"
+                            C[Authentication]
+                            D[Firestore Database]
+                            E[Firebase Storage]
+                            F[Firebase Functions]
+                        end
+                        
+                        subgraph "External Services"
+                            G[Razorpay Payment]
+                            H[Shiprocket Shipping]
+                            I[Email Service]
+                        end
+                        
+                        A --> B
+                        B --> C
+                        B --> D
+                        B --> E
+                        B --> F
+                        A4 --> G
+                        A5 --> H
+                        F --> I
+                        C --> D
+                </div>
+            </div>
+            
+            <div class="component-description">
+                <h4>Frontend Architecture</h4>
+                <p>The frontend is built as a Single Page Application (SPA) using React 19.2.0 with component-based architecture. Key components include:</p>
+                <ul>
+                    <li><strong>Product Catalog:</strong> Dynamic product browsing with filtering and search</li>
+                    <li><strong>Shopping Cart:</strong> Real-time cart management with localStorage persistence</li>
+                    <li><strong>Checkout System:</strong> Multi-step checkout with address management and payment integration</li>
+                    <li><strong>Admin Dashboard:</strong> Comprehensive admin interface for product, order, and user management</li>
+                </ul>
+            </div>
+            
+            <div class="component-description">
+                <h4>Backend Architecture</h4>
+                <p>Firebase provides a serverless backend with:</p>
+                <ul>
+                    <li><strong>Firebase Authentication:</strong> User authentication with email/password and OTP verification</li>
+                    <li><strong>Firestore:</strong> NoSQL database for real-time data synchronization</li>
+                    <li><strong>Firebase Storage:</strong> Cloud storage for product images and assets</li>
+                    <li><strong>Firebase Functions:</strong> Server-side logic for email notifications and order processing</li>
+                </ul>
+            </div>
+            
+            <div class="architecture-note">
+                <strong>Architectural Decision:</strong> The system uses a serverless architecture with Firebase to minimize infrastructure management while providing scalability and real-time capabilities. React Context API is chosen over Redux for simpler state management given the application's current complexity.
+            </div>
+        </section>
+
+        <section id="data-architecture">
+            <h2>3. Data Architecture</h2>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+                    erDiagram
+                        USERS {
+                            string uid PK
+                            string email
+                            string displayName
+                            boolean isAdmin
+                            boolean emailVerified
+                            date createdAt
+                            string memberSince
+                            string phone
+                        }
+                        
+                        PRODUCTS {
+                            string id PK
+                            string name
+                            string category
+                            string subcategory
+                            number price
+                            number originalPrice
+                            array images
+                            array sizes
+                            array colors
+                            string description
+                            string fabricDetails
+                            number stock
+                            boolean isPreOrder
+                            number preOrderStock
+                            date preOrderStartDate
+                            date preOrderEndDate
+                            number position
+                            date createdAt
+                            date updatedAt
+                        }
+                        
+                        CATEGORIES {
+                            string id PK
+                            string name
+                            string description
+                            string image
+                            boolean isActive
+                            number position
+                            date createdAt
+                            date updatedAt
+                        }
+                        
+                        ORDERS {
+                            string id PK
+                            string userId FK
+                            array items
+                            number subtotal
+                            number shipping
+                            number tax
+                            number discount
+                            number total
+                            object shippingAddress
+                            string status
+                            string paymentStatus
+                            string paymentId
+                            date createdAt
+                            date updatedAt
+                            string orderNotes
+                            string promoCode
+                            boolean hasPreOrderItems
+                        }
+                        
+                        CART {
+                            string userId PK
+                            array items
+                            date updatedAt
+                        }
+                        
+                        WISHLIST {
+                            string userId PK
+                            array productIds
+                            date updatedAt
+                        }
+                        
+                        COUPONS {
+                            string id PK
+                            string code
+                            string description
+                            string discountType
+                            number discountValue
+                            number minOrderAmount
+                            number maxDiscountAmount
+                            number usageLimit
+                            number usedCount
+                            date startDate
+                            date endDate
+                            boolean isActive
+                            date createdAt
+                        }
+                        
+                        ADDRESSES {
+                            string id PK
+                            string userId FK
+                            string name
+                            string phone
+                            string address
+                            string apartment
+                            string city
+                            string state
+                            string postcode
+                            string country
+                            boolean isDefault
+                        }
+                        
+                        USER_SEARCH_INDEX {
+                            string id PK
+                            string userId FK
+                            string displayName
+                            string email
+                            array searchTerms
+                            boolean isActive
+                            boolean isAdmin
+                        }
+                        
+                        USERS ||--o{ ORDERS : places
+                        USERS ||--o{ CART : owns
+                        USERS ||--o{ WISHLIST : owns
+                        USERS ||--o{ ADDRESSES : has
+                        USERS ||--o{ USER_SEARCH_INDEX : indexed
+                        CATEGORIES ||--o{ PRODUCTS : contains
+                        PRODUCTS ||--o{ ORDERS : included
+                </div>
+            </div>
+            
+            <div class="component-description">
+                <h4>Database Design Principles</h4>
+                <ul>
+                    <li><strong>Denormalization:</strong> Product data includes category names for faster queries</li>
+                    <li><strong>Composite Documents:</strong> Orders contain complete item snapshots to preserve historical data</li>
+                    <li><strong>Search Optimization:</strong> User search index enables efficient admin user searches</li>
+                    <li><strong>Real-time Updates:</strong> Cart and wishlist data syncs across user sessions</li>
+                </ul>
+            </div>
+            
+            <table>
+                <tr>
+                    <th>Collection</th>
+                    <th>Primary Purpose</th>
+                    <th>Key Fields</th>
+                    <th>Indexing Strategy</th>
+                </tr>
+                <tr>
+                    <td>users</td>
+                    <td>User authentication and profiles</td>
+                    <td>uid, email, isAdmin, emailVerified</td>
+                    <td>Composite on (userId, createdAt)</td>
+                </tr>
+                <tr>
+                    <td>products</td>
+                    <td>Product catalog</td>
+                    <td>category, stock, isPreOrder, position</td>
+                    <td>Composite on (isPreOrder, preOrderStock)</td>
+                </tr>
+                <tr>
+                    <td>orders</td>
+                    <td>Order management</td>
+                    <td>userId, status, createdAt</td>
+                    <td>Composite on (userId, createdAt DESC)</td>
+                </tr>
+                <tr>
+                    <td>userSearchIndex</td>
+                    <td>Admin user search</td>
+                    <td>searchTerms, isActive, isAdmin</td>
+                    <td>Array-contains on searchTerms</td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="authentication">
+            <h2>4. Authentication Flow</h2>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+                    sequenceDiagram
+                        participant U as User
+                        participant F as Frontend
+                        participant A as Auth Service
+                        participant E as Email Service
+                        participant DB as Firestore
+                        
+                        Note over U,DB: User Registration Flow
+                        U->>F: Submit registration form
+                        F->>E: Send OTP verification
+                        E-->>U: OTP email sent
+                        U->>F: Submit OTP
+                        F->>E: Verify OTP
+                        E-->>F: OTP validation result
+                        alt OTP Valid
+                            F->>A: Create user account
+                            A->>DB: Store user document
+                            DB-->>A: User created
+                            A-->>F: Authentication success
+                            F-->>U: Registration successful
+                        else OTP Invalid
+                            F-->>U: OTP verification failed
+                        end
+                        
+                        Note over U,DB: User Login Flow
+                        U->>F: Submit login credentials
+                        F->>A: Authenticate user
+                        A->>DB: Fetch user data
+                        DB-->>A: User profile
+                        A-->>F: Authentication result
+                        alt Success
+                            F-->>U: Login successful
+                            F->>F: Update AuthContext
+                        else Failed
+                            F-->>U: Login failed
+                        end
+                </div>
+            </div>
+            
+            <div class="component-description">
+                <h4>Authentication Features</h4>
+                <ul>
+                    <li><strong>Email/Password Authentication:</strong> Traditional login with Firebase Auth</li>
+                    <li><strong>OTP Verification:</strong> Email-based OTP for account verification</li>
+                    <li><strong>Role-Based Access:</strong> Admin vs regular user permissions</li>
+                    <li><strong>Session Management:</strong> Persistent authentication with token refresh</li>
+                    <li><strong>Rate Limiting:</strong> Protection against brute force attacks</li>
+                </ul>
+            </div>
+            
+            <div class="architecture-note">
+                <strong>Security Implementation:</strong> Admin access is granted to specific email addresses (haathsaga.mauryas19@gmail.com, admin@haathsaga.com) with fallback database verification for other admin users.
+            </div>
+        </section>
+
+        <section id="ecommerce-flow">
+            <h2>5. E-Commerce Flow</h2>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+                    flowchart TD
+                        A[Product Browsing] --> B[Add to Cart]
+                        B --> C[View Cart]
+                        C --> D[Proceed to Checkout]
+                        D --> E[Select Address]
+                        E --> F[Apply Coupon]
+                        F --> G[Payment Processing]
+                        G --> H{Payment Method}
+                        H -->|Razorpay| I[Razorpay Gateway]
+                        H -->|COD| J[Create COD Order]
+                        I --> K[Payment Success]
+                        J --> K
+                        K --> L[Order Confirmation]
+                        L --> M[Order Management]
+                        M --> N[Shipping Integration]
+                        N --> O[Order Fulfillment]
+                        
+                        subgraph "Admin Order Processing"
+                            P[Order Dashboard]
+                            Q[Status Updates]
+                            R[Shipment Creation]
+                            S[Tracking Updates]
+                        end
+                        
+                        M --> P
+                        P --> Q
+                        Q --> R
+                        R --> S
+                        S --> N
+                </div>
+            </div>
+            
+            <div class="component-description">
+                <h4>Shopping Cart Features</h4>
+                <ul>
+                    <li><strong>Real-time Updates:</strong> Cart syncs across devices via Firebase</li>
+                    <li><strong>Guest Cart:</strong> Local storage for non-authenticated users</li>
+                    <li><strong>Product Variants:</strong> Support for size and color selection</li>
+                    <li><strong>Stock Validation:</strong> Real-time stock checking</li>
+                    <li><strong>Pre-order Support:</strong> Mixed cart with regular and pre-order items</li>
+                </ul>
+            </div>
+            
+            <div class="component-description">
+                <h4>Payment Processing</h4>
+                <ul>
+                    <li><strong>Razorpay Integration:</strong> Multiple payment methods (UPI, Cards, Net Banking)</li>
+                    <li><strong>Cash on Delivery:</strong> COD option for eligible orders</li>
+                    <li><strong>Payment Security:</strong> PCI compliance through Razorpay</li>
+                    <li><strong>Order Creation:</strong> Orders created before payment processing</li>
+                    <li><strong>Failure Handling:</strong> Automatic order cancellation on payment failure</li>
+                </ul>
+            </div>
+            
+            <div class="component-description">
+                <h4>Order Management</h4>
+                <ul>
+                    <li><strong>Order Status Tracking:</strong> Processing → Shipped → Delivered</li>
+                    <li><strong>Stock Management:</strong> Automatic stock updates on order placement</li>
+                    <li><strong>Pre-order Handling:</strong> Separate stock tracking for pre-orders</li>
+                    <li><strong>Cancellation Support:</strong> Order cancellation with stock restoration</li>
+                    <li><strong>Shipping Integration:</strong> Shiprocket API for shipment management</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="admin-system">
+            <h2>6. Admin System Architecture</h2>
+            
+            <div class="diagram-container">
+                <div class="mermaid">
+                    graph TB
+                        subgraph "Admin Dashboard"
+                            A[Dashboard Overview]
+                            B[Products Management]
+                            C[Orders Management]
+                            D[Users Management]
+                            E[Categories Management]
+                            F[Coupons Management]
+                            G[Payments Management]
+                            H[Shipping Management]
+                        end
+                        
+                        subgraph "Product Management"
+                            B1[Product CRUD]
+                            B2[Stock Management]
+                            B3[Image Upload]
+                            B4[Pre-order Configuration]
+                            B --> B1
+                            B --> B2
+                            B --> B3
+                            B --> B4
+                        end
+                        
+                        subgraph "Order Management"
+                            C1[Order Status Updates]
+                            C2[Order Details View]
+                            C3[Refund Processing]
+                            C4[Order Analytics]
+                            C --> C1
+                            C --> C2
+                            C --> C3
+                            C --> C4
+                        end
+                        
+                        subgraph "Shipping Integration"
+                            H1[Shiprocket Auth]
+                            H2[Shipment Creation]
+                            H3[Tracking Updates]
+                            H4[Pickup Locations]
+                            H --> H1
+                            H --> H2
+                            H --> H3
+                            H --> H4
+                        end
+                        
+                        A --> B
+                        A --> C
+                        A --> D
+                        A --> E
+                        A --> F
+                        A --> G
+                        A --> H
+                </div>
+            </div>
+            
+            <div class="component-description">
+                <h4>Admin Features</h4>
+                <ul>
+                    <li><strong>Dashboard Analytics:</strong> Real-time statistics and KPIs</li>
+                    <li><strong>Product Management:</strong> Full CRUD with image upload and stock control</li>
+                    <li><strong>Order Processing:</strong> Status updates, refunds, and tracking</li>
+                    <li><strong>User Management:</strong> User roles and account administration</li>
+                    <li><strong>Category Management:</strong> Hierarchical product categorization</li>
+                    <li><strong>Coupon System:</strong> Discount code creation and management</li>
+                    <li><strong>Shipping Integration:</strong> Shiprocket API integration</li>
+                </ul>
+            </div>
+            
+            <div class="architecture-note">
+                <strong>Permission System:</strong> Admin access is restricted to specific email addresses with additional database-based role verification. The system supports role-based access control with potential for future expansion.
+            </div>
+        </section>
+
+        <section id="technical-decisions">
+            <h2>7. Technical Decisions</h2>
+            
+            <div class="component-description">
+                <h4>Frontend Technology Stack</h4>
+                <ul>
+                    <li><strong>React 19.2.0:</strong> Latest React version with improved performance and features</li>
+                    <li><strong>Vite:</strong> Fast development server and optimized builds</li>
+                    <li><strong>Tailwind CSS:</strong> Utility-first CSS for rapid UI development</li>
+                    <li><strong>React Router:</strong> Client-side routing for SPA experience</li>
+                </ul>
+            </div>
+            
+            <div class="component-description">
+                <h4>Backend Technology Stack</h4>
+                <ul>
+                    <li><strong>Firebase:</strong> Serverless backend with real-time capabilities</li>
+                    <li><strong>Firestore:</strong> NoSQL database for flexible data structure</li>
+                    <li><strong>Firebase Authentication:</strong> Secure user authentication</li>
+                    <li><strong>Firebase Storage:</strong> Scalable file storage</li>
+                </ul>
+            </div>
+            
+            <div class="component-description">
+                <h4>Third-Party Integrations</h4>
+                <ul>
+                    <li><strong>Razorpay:</strong> Payment gateway with multiple payment options</li>
+                    <li><strong>Shiprocket:</strong> Shipping and logistics management</li>
+                    <li><strong>Nodemailer:</strong> Email service for notifications</li>
+                </ul>
+            </div>
+            
+            <div class="architecture-note">
+                <strong>Architecture Philosophy:</strong> The system prioritizes developer productivity, scalability, and maintainability through modern web technologies and serverless architecture. Firebase was chosen to minimize infrastructure overhead while providing enterprise-grade features.
+            </div>
+        </section>
+
+        <section id="scalability">
+            <h2>8. Scalability Considerations</h2>
+            
+            <div class="component-description">
+                <h4>Database Scalability</h4>
+                <ul>
+                    <li><strong>Firestore Indexing:</strong> Optimized queries for large datasets</li>
+                    <li><strong>Data Pagination:</strong> Server-side pagination for large collections</li>
+                    <li><strong>Caching Strategy:</strong> Client-side caching for frequently accessed data</li>
+                    <li><strong>Real-time Limits:</strong> Efficient real-time listener management</li>
+                </ul>
+            </div>
+            
+            <div class="component-description">
+                <h4>Application Scalability</h4>
+                <ul>
+                    <li><strong>Component Lazy Loading:</strong> Code splitting for better performance</li>
+                    <li><strong>Image Optimization:</strong> Responsive images and lazy loading</li>
+                    <li><strong>State Management:</strong> Efficient state updates and subscriptions</li>
+                    <li><strong>Error Boundaries:</strong> Graceful error handling and recovery</li>
+                </ul>
+            </div>
+            
+            <div class="component-description">
+                <h4>Infrastructure Scalability</h4>
+                <ul>
+                    <li><strong>Firebase Auto-scaling:</strong> Automatic scaling based on demand</li>
+                    <li><strong>CDN Distribution:</strong> Global content delivery network</li>
+                    <li><strong>Serverless Functions:</strong> Event-driven scaling for backend processes</li>
+                    <li><strong>Storage Optimization:</strong> Efficient file storage and retrieval</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="security">
+            <h2>9. Security Considerations</h2>
+            
+            <div class="component-description">
+                <h4>Authentication Security</h4>
+                <ul>
+                    <li><strong>OTP Verification:</strong> Email-based verification for account security</li>
+                    <li><strong>Rate Limiting:</strong> Protection against brute force attacks</li>
+                    <li><strong>Session Management:</strong> Secure token handling and refresh</li>
+                    <li><strong>Password Security:</strong> Firebase's built-in password security</li>
+                </ul>
+            </div>
+            
+            <div class="component-description">
+                <h4>Data Security</h4>
+                <ul>
+                    <li><strong>Firestore Rules:</strong> Database access control and validation</li>
+                    <li><strong>Input Validation:</strong> Client and server-side validation</li>
+                    <li><strong>Sensitive Data:</strong> Proper handling of user information</li>
+                    <li><strong>Audit Logging:</strong> Tracking of admin actions and changes</li>
+                </ul>
+            </div>
+            
+            <div class="component-description">
+                <h4>Payment Security</h4>
+                <ul>
+                    <li><strong>PCI Compliance:</strong> Razorpay handles payment security</li>
+                    <li><strong>Secure Checkout:</strong> HTTPS and secure payment flow</li>
+                    <li><strong>Fraud Prevention:</strong> Basic fraud detection measures</li>
+                    <li><strong>Refund Security:</strong> Controlled refund processing</li>
+                </ul>
+            </div>
+            
+            <div class="architecture-note">
+                <strong>Security Best Practices:</strong> The system follows industry-standard security practices including secure authentication, data encryption, access control, and regular security updates through Firebase and third-party services.
+            </div>
+        </section>
+
+        <div class="container" style="margin-top: 50px; text-align: center;">
+            <h2>Conclusion</h2>
+            <p>HaathSaga's architecture is designed to provide a robust, scalable, and maintainable e-commerce platform. The combination of modern frontend technologies with Firebase's serverless backend creates an efficient development and deployment workflow while ensuring excellent user experience and system reliability.</p>
+            
+            <p style="margin-top: 30px;"><strong>Document Version:</strong> 1.0</p>
+            <p><strong>Last Updated:</strong> January 2025</p>
+            <p><strong>Author:</strong> Architecture Team</p>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>

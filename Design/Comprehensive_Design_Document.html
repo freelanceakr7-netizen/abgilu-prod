@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaathSaga - Comprehensive Design Documentation</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --light-bg: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-muted: #6c757d;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --shadow-hover: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--secondary-color);
+            background-color: var(--light-bg);
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .sidebar {
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .sidebar .active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .main-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .section {
+            margin-bottom: 50px;
+            scroll-margin-top: 20px;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: var(--primary-color);
+            margin: 30px 0 15px;
+            font-size: 1.6rem;
+        }
+
+        h4 {
+            color: var(--secondary-color);
+            margin: 20px 0 10px;
+            font-size: 1.3rem;
+        }
+
+        p {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+
+        .diagram-container {
+            margin: 30px 0;
+            padding: 25px;
+            background: var(--light-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .component-description, .architecture-note, .implementation-detail, .security-note {
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .component-description {
+            background: var(--light-bg);
+            border-color: var(--primary-color);
+        }
+
+        .architecture-note {
+            background: #e8f4fd;
+            border-color: var(--primary-color);
+        }
+
+        .implementation-detail {
+            background: #fff3cd;
+            border-color: var(--warning-color);
+        }
+
+        .security-note {
+            background: #f8d7da;
+            border-color: var(--accent-color);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .tech-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+
+        .tech-badge:hover {
+            transform: translateY(-2px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            box-shadow: var(--shadow);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: var(--light-bg);
+        }
+
+        tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .code-block {
+            background: #f4f4f4;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            margin: 20px 0;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .feature-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: var(--secondary-color);
+            transform: translateY(-3px);
+        }
+
+        footer {
+            background: var(--secondary-color);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+
+        .responsive-table {
+            overflow-x: auto;
+        }
+
+        @media (max-width: 1024px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+                max-height: none;
+                margin-bottom: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            header h2 {
+                font-size: 1.4rem;
+            }
+            
+            h2 {
+                font-size: 1.8rem;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .tech-stack {
+                justify-content: center;
+            }
+        }
+
+        .print-only {
+            display: none;
+        }
+
+        @media print {
+            .sidebar, .back-to-top {
+                display: none;
+            }
+            
+            .content-wrapper {
+                grid-template-columns: 1fr;
+            }
+            
+            .print-only {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HaathSaga E-Commerce Platform</h1>
+            <h2>Comprehensive Design Documentation</h2>
+        </header>
+
+        <div class="content-wrapper">
+            <aside class="sidebar">
+                <h3>Quick Navigation</h3>
+                <ul>
+                    <li><a href="#executive-summary">1. Executive Summary</a></li>
+                    <li><a href="#technology-stack">2. Technology Stack</a></li>
+                    <li><a href="#system-architecture">3. System Architecture</a></li>
+                    <li><a href="#component-architecture">4. Component Architecture</a></li>
+                    <li><a href="#database-design">5. Database Design</a></li>
+                    <li><a href="#api-documentation">6. API Documentation</a></li>
+                    <li><a href="#security-implementation">7. Security Implementation</a></li>
+                    <li><a href="#performance-optimization">8. Performance Optimization</a></li>
+                    <li><a href="#deployment-infrastructure">9. Deployment & Infrastructure</a></li>
+                    <li><a href="#development-guidelines">10. Development Guidelines</a></li>
+                    <li><a href="#future-enhancements">11. Future Enhancements</a></li>
+                </ul>
+            </aside>
+
+            <main class="main-content">
+                <section id="executive-summary" class="section">
+                    <h2>1. Executive Summary</h2>
+                    
+                    <p>HaathSaga is a modern e-commerce platform specializing in fashion apparel, built with cutting-edge web technologies to provide a seamless shopping experience. The platform combines sophisticated frontend design with robust backend infrastructure to deliver a complete e-commerce solution from product browsing to order fulfillment.</p>
+                    
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>🛍️ Complete Shopping Experience</h4>
+                            <p>Full-featured e-commerce platform with product catalog, shopping cart, checkout process, and order management</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>👥 User-Centric Design</h4>
+                            <p>Intuitive user interface with personalized shopping experience, wishlist management, and order tracking</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🔧 Admin Dashboard</h4>
+                            <p>Comprehensive administrative interface for product management, order processing, and business analytics</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🔒 Secure Payments</h4>
+                            <p>Integrated payment gateway with multiple payment options and PCI compliance</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>📦 Shipping Integration</h4>
+                            <p>Seamless logistics management with real-time tracking and delivery updates</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>📱 Responsive Design</h4>
+                            <p>Mobile-optimized interface providing consistent experience across all devices</p>
+                        </div>
+                    </div>
+                    
+                    <div class="architecture-note">
+                        <strong>Key Business Value:</strong> The platform is designed to scale with business growth, providing a solid foundation for expanding product lines, customer base, and market reach while maintaining operational efficiency and customer satisfaction.
+                    </div>
+                </section>
+
+                <section id="technology-stack" class="section">
+                    <h2>2. Technology Stack</h2>
+                    
+                    <p>HaathSaga leverages a modern, scalable technology stack that balances performance, maintainability, and development efficiency.</p>
+                    
+                    <h3>Frontend Technologies</h3>
+                    <div class="tech-stack">
+                        <span class="tech-badge">React 19.2.0</span>
+                        <span class="tech-badge">Vite 6.2.0</span>
+                        <span class="tech-badge">Tailwind CSS</span>
+                        <span class="tech-badge">React Router 7.9.5</span>
+                        <span class="tech-badge">Lucide React</span>
+                        <span class="tech-badge">Prop Types</span>
+                    </div>
+                    
+                    <h3>Backend & Services</h3>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Firebase 12.5.0</span>
+                        <span class="tech-badge">Firebase Admin 13.6.0</span>
+                        <span class="tech-badge">Firestore Database</span>
+                        <span class="tech-badge">Firebase Storage</span>
+                        <span class="tech-badge">Firebase Functions</span>
+                    </div>
+                    
+                    <h3>Third-Party Integrations</h3>
+                    <div class="tech-stack">
+                        <span class="tech-badge">Razorpay 2.9.6</span>
+                        <span class="tech-badge">Nodemailer 7.0.10</span>
+                        <span class="tech-badge">Shiprocket API</span>
+                        <span class="tech-badge">Sentry 10.32.1</span>
+                    </div>
+                    
+                    <div class="component-description">
+                        <h4>Technology Selection Rationale</h4>
+                        <ul>
+                            <li><strong>React 19.2.0:</strong> Latest version with enhanced performance, concurrent features, and improved developer experience</li>
+                            <li><strong>Firebase:</strong> Serverless backend providing authentication, database, storage, and functions with automatic scaling</li>
+                            <li><strong>Vite:</strong> Fast development server and optimized build process for improved development workflow</li>
+                            <li><strong>Tailwind CSS:</strong> Utility-first CSS framework enabling rapid UI development with consistent design system</li>
+                            <li><strong>Razorpay:</strong> Comprehensive payment solution supporting multiple payment methods popular in Indian market</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="system-architecture" class="section">
+                    <h2>3. System Architecture</h2>
+                    
+                    <p>The HaathSaga platform follows a modern serverless architecture pattern, separating concerns between frontend, backend services, and external integrations for optimal scalability and maintainability.</p>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+                            graph TB
+                                subgraph "Client Layer"
+                                    A[React SPA]
+                                    A1[Header Component]
+                                    A2[Product Pages]
+                                    A3[Cart System]
+                                    A4[Checkout Flow]
+                                    A5[Admin Dashboard]
+                                    A --> A1
+                                    A --> A2
+                                    A --> A3
+                                    A --> A4
+                                    A --> A5
+                                end
+                                
+                                subgraph "State Management"
+                                    B[React Context API]
+                                    B1[AuthContext]
+                                    B2[CartContext]
+                                    B3[AdminContext]
+                                    B4[ProductContext]
+                                    B5[CategoryContext]
+                                    B --> B1
+                                    B --> B2
+                                    B --> B3
+                                    B --> B4
+                                    B --> B5
+                                end
+                                
+                                subgraph "Firebase Backend"
+                                    C[Authentication]
+                                    D[Firestore Database]
+                                    E[Firebase Storage]
+                                    F[Firebase Functions]
+                                end
+                                
+                                subgraph "External Services"
+                                    G[Razorpay Payment]
+                                    H[Shiprocket Shipping]
+                                    I[Email Service]
+                                end
+                                
+                                A --> B
+                                B --> C
+                                B --> D
+                                B --> E
+                                B --> F
+                                A4 --> G
+                                A5 --> H
+                                F --> I
+                                C --> D
+                        </div>
+                    </div>
+                    
+                    <h3>Frontend Architecture</h3>
+                    <div class="component-description">
+                        <p>The frontend is built as a Single Page Application (SPA) using React with component-based architecture:</p>
+                        <ul>
+                            <li><strong>Product Catalog:</strong> Dynamic product browsing with advanced filtering and search capabilities</li>
+                            <li><strong>Shopping Cart:</strong> Real-time cart management with localStorage persistence for guest users</li>
+                            <li><strong>Checkout System:</strong> Multi-step checkout with address management and payment integration</li>
+                            <li><strong>Admin Dashboard:</strong> Comprehensive admin interface for business operations</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Backend Architecture</h3>
+                    <div class="component-description">
+                        <p>Firebase provides a serverless backend with following services:</p>
+                        <ul>
+                            <li><strong>Firebase Authentication:</strong> Secure user authentication with email/password and OTP verification</li>
+                            <li><strong>Firestore:</strong> NoSQL database for real-time data synchronization</li>
+                            <li><strong>Firebase Storage:</strong> Cloud storage for product images and static assets</li>
+                            <li><strong>Firebase Functions:</strong> Server-side logic for email notifications and order processing</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="architecture-note">
+                        <strong>Architectural Decision:</strong> The serverless architecture with Firebase minimizes infrastructure management while providing automatic scalability and real-time capabilities. React Context API is chosen over Redux for simpler state management given application's current complexity.
+                    </div>
+                </section>
+
+                <section id="component-architecture" class="section">
+                    <h2>4. Component Architecture</h2>
+                    
+                    <p>The application follows a hierarchical component structure with clear separation of concerns, promoting reusability and maintainability.</p>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+                            graph TB
+                                subgraph "App Root"
+                                    A[App.jsx]
+                                    A1[Router Setup]
+                                    A2[Global Providers]
+                                    A --> A1
+                                    A --> A2
+                                end
+                                
+                                subgraph "Provider Layer"
+                                    B[AuthProvider]
+                                    C[CartProvider]
+                                    D[ProductProvider]
+                                    E[CategoryProvider]
+                                    F[AdminProvider]
+                                    A2 --> B
+                                    A2 --> C
+                                    A2 --> D
+                                    A2 --> E
+                                    A2 --> F
+                                end
+                                
+                                subgraph "Layout Components"
+                                    G[Header]
+                                    H[Footer]
+                                    I[Navigation]
+                                    J[ToastContainer]
+                                end
+                                
+                                subgraph "Page Components"
+                                    K[HomePage]
+                                    L[ShopPage]
+                                    M[ProductDetailPage]
+                                    N[CheckoutPage]
+                                    O[AdminDashboardPage]
+                                    P[AccountPages]
+                                end
+                                
+                                subgraph "Feature Components"
+                                    Q[ProductCard]
+                                    R[CartSidebar]
+                                    S[WishlistSidebar]
+                                    T[PaymentModal]
+                                    U[LoginModal]
+                                    V[ProductFilters]
+                                end
+                                
+                                subgraph "Admin Components"
+                                    W[ProductsManagement]
+                                    X[OrdersManagement]
+                                    Y[UsersManagement]
+                                    Z[CategoriesManagement]
+                                end
+                                
+                                A1 --> K
+                                A1 --> L
+                                A1 --> M
+                                A1 --> N
+                                A1 --> O
+                                A1 --> P
+                                
+                                K --> G
+                                K --> H
+                                L --> G
+                                L --> H
+                                M --> G
+                                M --> H
+                                N --> G
+                                N --> H
+                                O --> G
+                                O --> H
+                                P --> G
+                                P --> H
+                                
+                                L --> Q
+                                L --> V
+                                M --> Q
+                                M --> R
+                                M --> S
+                                
+                                N --> T
+                                K --> U
+                                
+                                O --> W
+                                O --> X
+                                O --> Y
+                                O --> Z
+                                
+                                G --> I
+                                A --> J
+                        </div>
+                    </div>
+                    
+                    <h3>Component Hierarchy Details</h3>
+                    <div class="component-description">
+                        <ul>
+                            <li><strong>App.jsx:</strong> Root component initializing routing and global providers</li>
+                            <li><strong>Provider Layer:</strong> Context providers managing global state and services</li>
+                            <li><strong>Layout Components:</strong> Reusable UI components providing consistent structure</li>
+                            <li><strong>Page Components:</strong> Top-level components for each application route</li>
+                            <li><strong>Feature Components:</strong> Reusable components for specific functionality</li>
+                            <li><strong>Admin Components:</strong> Specialized components for administrative functions</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Props Flow Pattern</h3>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+                            flowchart LR
+                                A[Parent Component] -->|props.data| B[Child Component]
+                                A -->|props.handlers| B
+                                A -->|props.config| B
+                                B -->|callback| A
+                                B -->|events| A
+                                
+                                subgraph "Context Flow"
+                                    C[Context Provider] -->|value| D[Consumer Component]
+                                    D -->|dispatch| E[Context Reducer]
+                                    E -->|state| C
+                                end
+                        </div>
+                    </div>
+                </section>
+
+                <section id="database-design" class="section">
+                    <h2>5. Database Design</h2>
+                    
+                    <p>The database design follows Firestore best practices with denormalization for performance, composite documents for data integrity, and strategic indexing for query optimization.</p>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+                            erDiagram
+                                USERS {
+                                    string uid PK
+                                    string email
+                                    string displayName
+                                    boolean isAdmin
+                                    boolean emailVerified
+                                    date createdAt
+                                    string memberSince
+                                    string phone
+                                    string profileImage
+                                    date lastLoginAt
+                                    boolean isActive
+                                }
+                                
+                                PRODUCTS {
+                                    string id PK
+                                    string name
+                                    string description
+                                    string category FK
+                                    string subcategory
+                                    number price
+                                    number originalPrice
+                                    array images
+                                    array sizes
+                                    array colors
+                                    string fabricDetails
+                                    number stock
+                                    boolean isActive
+                                    boolean isPreOrder
+                                    number preOrderStock
+                                    date preOrderStartDate
+                                    date preOrderEndDate
+                                    number preOrderPrice
+                                    string expectedShippingDate
+                                    number position
+                                    date createdAt
+                                    date updatedAt
+                                }
+                                
+                                CATEGORIES {
+                                    string id PK
+                                    string name
+                                    string description
+                                    string image
+                                    boolean isActive
+                                    number position
+                                    date createdAt
+                                    date updatedAt
+                                }
+                                
+                                ORDERS {
+                                    string id PK
+                                    string userId FK
+                                    array items
+                                    number subtotal
+                                    number shipping
+                                    number tax
+                                    number discount
+                                    number total
+                                    object shippingAddress
+                                    string status
+                                    string paymentStatus
+                                    string paymentId
+                                    string razorpayOrderId
+                                    string promoCode
+                                    boolean hasPreOrderItems
+                                    string orderNotes
+                                    date createdAt
+                                    date updatedAt
+                                    string trackingNumber
+                                    string carrier
+                                }
+                                
+                                CART {
+                                    string userId PK
+                                    array items
+                                    date updatedAt
+                                }
+                                
+                                WISHLIST {
+                                    string userId PK
+                                    array items
+                                    date updatedAt
+                                }
+                                
+                                COUPONS {
+                                    string id PK
+                                    string code
+                                    string description
+                                    string discountType
+                                    number discountValue
+                                    number minOrderAmount
+                                    number maxDiscountAmount
+                                    number usageLimit
+                                    number usedCount
+                                    date startDate
+                                    date endDate
+                                    boolean isActive
+                                    date createdAt
+                                }
+                                
+                                ADDRESSES {
+                                    string id PK
+                                    string userId FK
+                                    string name
+                                    string phone
+                                    string address
+                                    string apartment
+                                    string city
+                                    string state
+                                    string postcode
+                                    string country
+                                    boolean isDefault
+                                    date createdAt
+                                    date updatedAt
+                                }
+                                
+                                USER_SEARCH_INDEX {
+                                    string id PK
+                                    string userId FK
+                                    string displayName
+                                    string email
+                                    array searchTerms
+                                    boolean isActive
+                                    boolean isAdmin
+                                    date updatedAt
+                                }
+                                
+                                REVIEWS {
+                                    string id PK
+                                    string productId FK
+                                    string userId FK
+                                    number rating
+                                    string comment
+                                    boolean isVerified
+                                    date createdAt
+                                    date updatedAt
+                                }
+                                
+                                USERS ||--o{ ORDERS : places
+                                USERS ||--o{ CART : owns
+                                USERS ||--o{ WISHLIST : owns
+                                USERS ||--o{ ADDRESSES : has
+                                USERS ||--o{ USER_SEARCH_INDEX : indexed
+                                USERS ||--o{ REVIEWS : writes
+                                CATEGORIES ||--o{ PRODUCTS : contains
+                                PRODUCTS ||--o{ ORDERS : included
+                                PRODUCTS ||--o{ REVIEWS : receives
+                        </div>
+                    </div>
+                    
+                    <h3>Database Design Principles</h3>
+                    <div class="component-description">
+                        <ul>
+                            <li><strong>Denormalization:</strong> Product data includes category names for faster queries</li>
+                            <li><strong>Composite Documents:</strong> Orders contain complete item snapshots to preserve historical data</li>
+                            <li><strong>Search Optimization:</strong> User search index enables efficient admin user searches</li>
+                            <li><strong>Real-time Updates:</strong> Cart and wishlist data syncs across user sessions</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Indexing Strategy</h3>
+                    <div class="responsive-table">
+                        <table>
+                            <tr>
+                                <th>Collection</th>
+                                <th>Primary Purpose</th>
+                                <th>Key Fields</th>
+                                <th>Indexing Strategy</th>
+                            </tr>
+                            <tr>
+                                <td>users</td>
+                                <td>User authentication and profiles</td>
+                                <td>uid, email, isAdmin, emailVerified</td>
+                                <td>Composite on (userId, createdAt)</td>
+                            </tr>
+                            <tr>
+                                <td>products</td>
+                                <td>Product catalog</td>
+                                <td>category, stock, isPreOrder, position</td>
+                                <td>Composite on (isPreOrder, preOrderStock)</td>
+                            </tr>
+                            <tr>
+                                <td>orders</td>
+                                <td>Order management</td>
+                                <td>userId, status, createdAt</td>
+                                <td>Composite on (userId, createdAt DESC)</td>
+                            </tr>
+                            <tr>
+                                <td>userSearchIndex</td>
+                                <td>Admin user search</td>
+                                <td>searchTerms, isActive, isAdmin</td>
+                                <td>Array-contains on searchTerms</td>
+                            </tr>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="api-documentation" class="section">
+                    <h2>6. API Documentation</h2>
+                    
+                    <p>The platform integrates with multiple external APIs to provide comprehensive e-commerce functionality, with robust error handling and fallback mechanisms.</p>
+                    
+                    <h3>Service Layer Architecture</h3>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+                            graph TB
+                                subgraph "Service Layer"
+                                    A[authService.js]
+                                    B[productService.js]
+                                    C[cartService.js]
+                                    D[orderService.js]
+                                    E[categoryService.js]
+                                    F[couponService.js]
+                                    G[userService.js]
+                                    H[paymentService.js]
+                                    I[emailService.js]
+                                    J[rateLimitService.js]
+                                end
+                                
+                                subgraph "Firebase SDK"
+                                    K[Firebase Auth]
+                                    L[Firestore]
+                                    M[Firebase Storage]
+                                    N[Firebase Functions]
+                                end
+                                
+                                subgraph "External APIs"
+                                    O[Razorpay API]
+                                    P[Shiprocket API]
+                                    Q[Email Service API]
+                                end
+                                
+                                A --> K
+                                A --> L
+                                B --> L
+                                B --> M
+                                C --> L
+                                D --> L
+                                E --> L
+                                F --> L
+                                G --> L
+                                H --> O
+                                I --> Q
+                                J --> L
+                                
+                                D --> H
+                                D --> I
+                                D --> P
+                        </div>
+                    </div>
+                    
+                    <h3>Payment Integration (Razorpay)</h3>
+                    <div class="component-description">
+                        <h4>Key Features</h4>
+                        <ul>
+                            <li><strong>Order Creation:</strong> Create Razorpay order before payment processing</li>
+                            <li><strong>Multiple Payment Methods:</strong> Support for UPI, Cards, Net Banking, Wallets</li>
+                            <li><strong>Webhook Verification:</strong> Secure payment status verification via webhooks</li>
+                            <li><strong>Refund Processing:</strong> Automated and manual refund capabilities</li>
+                            <li><strong>Error Handling:</strong> Graceful failure handling with automatic order cancellation</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Shipping Integration (Shiprocket)</h3>
+                    <div class="component-description">
+                        <h4>Key Features</h4>
+                        <ul>
+                            <li><strong>OAuth2 Authentication:</strong> Secure token-based authentication</li>
+                            <li><strong>Order Synchronization:</strong> Automatic order data sync to shipping platform</li>
+                            <li><strong>Shipment Creation:</strong> Bulk and individual shipment creation</li>
+                            <li><strong>Real-time Tracking:</strong> Live tracking updates for customer notifications</li>
+                            <li><strong>Address Validation:</strong> Pincode and address validation for delivery feasibility</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Email Service Integration</h3>
+                    <div class="component-description">
+                        <h4>Communication Features</h4>
+                        <ul>
+                            <li><strong>OTP Verification:</strong> Secure email-based account verification</li>
+                            <li><strong>Order Notifications:</strong> Automated order status updates</li>
+                            <li><strong>Password Reset:</strong> Secure password recovery process</li>
+                            <li><strong>Marketing Communications:</strong> Promotional emails and newsletters</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="security-implementation" class="section">
+                    <h2>7. Security Implementation</h2>
+                    
+                    <p>Security is implemented through multiple layers of protection, from authentication and authorization to data validation and secure communication protocols.</p>
+                    
+                    <div class="diagram-container">
+                        <div class="mermaid">
+                            graph TB
+                                subgraph "Authentication Layer"
+                                    A[Firebase Auth]
+                                    B[OTP Verification]
+                                    C[Rate Limiting]
+                                    D[Session Management]
+                                end
+                                
+                                subgraph "Authorization Layer"
+                                    E[Firestore Rules]
+                                    F[Role-Based Access]
+                                    G[Data Validation]
+                                    H[Audit Logging]
+                                end
+                                
+                                subgraph "Input Validation"
+                                    I[Client-Side Validation]
+                                    J[Server-Side Validation]
+                                    K[Sanitization]
+                                    L[Type Checking]
+                                end
+                                
+                                subgraph "Payment Security"
+                                    M[Razorpay Integration]
+                                    N[PCI Compliance]
+                                    O[Webhook Verification]
+                                    P[Refund Controls]
+                                end
+                                
+                                A --> E
+                                B --> C
+                                C --> D
+                                D --> F
+                                
+                                E --> G
+                                F --> H
+                                G --> I
+                                
+                                I --> J
+                                J --> K
+                                K --> L
+                                
+                                L --> M
+                                M --> N
+                                N --> O
+                                O --> P
+                        </div>
+                    </div>
+                    
+                    <h3>Authentication Security</h3>
+                    <div class="security-note">
+                        <h4>Security Measures</h4>
+                        <ul>
+                            <li><strong>OTP Verification:</strong> Email-based verification for account security</li>
+                            <li><strong>Rate Limiting:</strong> Protection against brute force attacks</li>
+                            <li><strong>Session Management:</strong> Secure token handling and refresh</li>
+                            <li><strong>Password Security:</strong> Firebase's built-in password security</li>
+                            <li><strong>Admin Access Control:</strong> Restricted admin access to specific email addresses</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Data Security</h3>
+                    <div class="security-note">
+                        <h4>Protection Mechanisms</h4>
+                        <ul>
+                            <li><strong>Firestore Rules:</strong> Database access control and validation</li>
+                            <li><strong>Input Validation:</strong> Client and server-side validation</li>
+                            <li><strong>Sensitive Data:</strong> Proper handling of user information</li>
+                            <li><strong>Audit Logging:</strong> Tracking of admin actions and changes</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Payment Security</h3>
+                    <div class="security-note">
+                        <h4>Compliance & Protection</h4>
+                        <ul>
+                            <li><strong>PCI Compliance:</strong> Razorpay handles payment security</li>
+                            <li><strong>Secure Checkout:</strong> HTTPS and secure payment flow</li>
+                            <li><strong>Fraud Prevention:</strong> Basic fraud detection measures</li>
+                            <li><strong>Refund Security:</strong> Controlled refund processing</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="performance-optimization" class="section">
+                    <h2>8. Performance Optimization</h2>
+                    
+                    <p>Performance optimization is implemented across multiple layers of application to ensure fast load times, smooth interactions, and efficient resource utilization.</p>
+                    
+                    <h3>Database Optimization</h3>
+                    <div class="component-description">
+                        <ul>
+                            <li><strong>Firestore Indexing:</strong> Optimized queries for large datasets</li>
+                            <li><strong>Data Pagination:</strong> Server-side pagination for large collections</li>
+                            <li><strong>Caching Strategy:</strong> Client-side caching for frequently accessed data</li>
+                            <li><strong>Real-time Limits:</strong> Efficient real-time listener management</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Application Optimization</h3>
+                    <div class="component-description">
+                        <ul>
+                            <li><strong>Component Lazy Loading:</strong> Code splitting for better performance</li>
+                            <li><strong>Image Optimization:</strong> Responsive images and lazy loading</li>
+                            <li><strong>State Management:</strong> Efficient state updates and subscriptions</li>
+                            <li><strong>Error Boundaries:</strong> Graceful error handling and recovery</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Caching Strategy</h3>
+                    <div class="diagram-container">
+                        <div class="mermaid">
+                            graph TB
+                                subgraph "Cache Layers"
+                                    A[Browser Cache]
+                                    B[Memory Cache]
+                                    C[localStorage Cache]
+                                    D[Service Worker Cache]
+                                end
+                                
+                                subgraph "Cache Types"
+                                    E[Product Data]
+                                    F[Category Data]
+                                    G[User Preferences]
+                                    H[Static Assets]
+                                end
+                                
+                                subgraph "Cache Strategies"
+                                    I[Time-Based Expiration]
+                                    J[Event-Based Invalidation]
+                                    K[Version-Based Updates]
+                                    L[Size-Based Eviction]
+                                end
+                                
+                                A --> H
+                                B --> E
+                                C --> F
+                                C --> G
+                                D --> H
+                                
+                                E --> I
+                                F --> J
+                                G --> K
+                                H --> L
+                        </div>
+                    </div>
+                    
+                    <div class="implementation-detail">
+                        <h4>Cache Implementation Details</h4>
+                        <ul>
+                            <li><strong>Product Caching:</strong> 5-minute cache duration with invalidation on updates</li>
+                            <li><strong>Image Caching:</strong> 30-day cache with version-based invalidation</li>
+                            <li><strong>Smart Invalidation:</strong> Pattern-based cache invalidation for related data</li>
+                            <li><strong>Size Management:</strong> Automatic eviction based on cache size limits</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="deployment-infrastructure" class="section">
+                    <h2>9. Deployment & Infrastructure</h2>
+                    
+                    <p>The platform leverages modern deployment practices and infrastructure to ensure reliability, scalability, and maintainability.</p>
+                    
+                    <h3>Infrastructure Components</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>🔥 Firebase Hosting</h4>
+                            <p>Global CDN deployment with automatic SSL and continuous deployment from Git</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>⚡ Vite Build System</h4>
+                            <p>Optimized production builds with code splitting and asset optimization</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>📊 Firebase Functions</h4>
+                            <p>Server-side logic for email notifications and order processing</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🗄️ Firestore Database</h4>
+                            <p>Auto-scaling NoSQL database with real-time synchronization</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>📁 Firebase Storage</h4>
+                            <p>Scalable cloud storage for product images and static assets</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🔍 Sentry Integration</h4>
+                            <p>Error monitoring and performance tracking for production issues</p>
+                        </div>
+                    </div>
+                    
+                    <h3>Deployment Process</h3>
+                    <div class="component-description">
+                        <h4>Build & Deploy Pipeline</h4>
+                        <ul>
+                            <li><strong>Development:</strong> Local development with Vite dev server</li>
+                            <li><strong>Building:</strong> Optimized production build with asset minification</li>
+                            <li><strong>Testing:</strong> Pre-deployment testing and validation</li>
+                            <li><strong>Deployment:</strong> Firebase hosting deployment with CDN distribution</li>
+                            <li><strong>Monitoring:</strong> Post-deployment monitoring and error tracking</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Scalability Considerations</h3>
+                    <div class="component-description">
+                        <ul>
+                            <li><strong>Firebase Auto-scaling:</strong> Automatic scaling based on demand</li>
+                            <li><strong>CDN Distribution:</strong> Global content delivery network</li>
+                            <li><strong>Serverless Functions:</strong> Event-driven scaling for backend processes</li>
+                            <li><strong>Storage Optimization:</strong> Efficient file storage and retrieval</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="development-guidelines" class="section">
+                    <h2>10. Development Guidelines</h2>
+                    
+                    <p>Development follows established best practices and coding standards to ensure code quality, maintainability, and team collaboration efficiency.</p>
+                    
+                    <h3>Coding Standards</h3>
+                    <div class="component-description">
+                        <ul>
+                            <li><strong>ES6+ Features:</strong> Modern JavaScript features for better code readability</li>
+                            <li><strong>Component Structure:</strong> Consistent component organization and naming conventions</li>
+                            <li><strong>Code Comments:</strong> Comprehensive documentation for complex logic</li>
+                            <li><strong>Error Handling:</strong> Consistent error handling patterns across application</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Git Workflow</h3>
+                    <div class="component-description">
+                        <ul>
+                            <li><strong>Feature Branches:</strong> Isolated development for new features</li>
+                            <li><strong>Code Reviews:</strong> Peer review process for code quality</li>
+                            <li><strong>Commit Messages:</strong> Clear and descriptive commit messages</li>
+                            <li><strong>Merge Strategy:</strong> Controlled merging to main branch</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Testing Strategy</h3>
+                    <div class="component-description">
+                        <ul>
+                            <li><strong>Unit Testing:</strong> Individual component and function testing</li>
+                            <li><strong>Integration Testing:</strong> Service and API integration testing</li>
+                            <li><strong>E2E Testing:</strong> End-to-end user flow testing</li>
+                            <li><strong>Performance Testing:</strong> Load testing and performance monitoring</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Documentation Standards</h3>
+                    <div class="component-description">
+                        <ul>
+                            <li><strong>API Documentation:</strong> Comprehensive API endpoint documentation</li>
+                            <li><strong>Component Documentation:</strong> Props and usage examples for components</li>
+                            <li><strong>Architecture Documentation:</strong> System design and decision records</li>
+                            <li><strong>Deployment Guides:</strong> Step-by-step deployment instructions</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="future-enhancements" class="section">
+                    <h2>11. Future Enhancements</h2>
+                    
+                    <p>The platform is designed with extensibility in mind, with planned enhancements to improve functionality, user experience, and business capabilities.</p>
+                    
+                    <h3>Short-term Enhancements (3-6 months)</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>🔍 Advanced Search</h4>
+                            <p>Enhanced search with filters, suggestions, and semantic search capabilities</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>💬 Customer Reviews</h4>
+                            <p>Product rating and review system with image uploads and moderation</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🎨 Personalization</h4>
+                            <p>AI-powered product recommendations and personalized shopping experience</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>📱 Mobile App</h4>
+                            <p>Native mobile applications for iOS and Android platforms</p>
+                        </div>
+                    </div>
+                    
+                    <h3>Mid-term Enhancements (6-12 months)</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>🤖 AI Chatbot</h4>
+                            <p>Intelligent customer service chatbot for instant support</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>📊 Advanced Analytics</h4>
+                            <p>Business intelligence dashboard with predictive analytics</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🌐 Multi-language Support</h4>
+                            <p>Internationalization with multiple language support</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>💳 Multiple Payment Options</h4>
+                            <p>Additional payment gateways and cryptocurrency support</p>
+                        </div>
+                    </div>
+                    
+                    <h3>Long-term Vision (1+ years)</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h4>🛒 Marketplace</h4>
+                            <p>Multi-vendor marketplace platform with third-party sellers</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>👗 Virtual Try-on</h4>
+                            <p>AR-powered virtual try-on for clothing items</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🌍 Global Expansion</h4>
+                            <p>International shipping and multi-currency support</p>
+                        </div>
+                        <div class="feature-card">
+                            <h4>🔗 Blockchain Integration</h4>
+                            <p>Supply chain transparency and authenticity verification</p>
+                        </div>
+                    </div>
+                    
+                    <div class="architecture-note">
+                        <strong>Scalability Roadmap:</strong> The platform architecture supports gradual implementation of these enhancements without major restructuring, ensuring smooth evolution of capabilities while maintaining system stability and performance.
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <footer>
+            <p><strong>Document Version:</strong> 1.0</p>
+            <p><strong>Last Updated:</strong> January 2025</p>
+            <p><strong>Author:</strong> Architecture Team</p>
+            <p><strong>Purpose:</strong> Complete technical reference for HaathSaga e-commerce platform</p>
+        </footer>
+    </div>
+
+    <div class="back-to-top" id="backToTop">↑</div>
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({ 
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            },
+            erDiagram: {
+                useMaxWidth: true,
+                htmlLabels: true
+            },
+            sequenceDiagram: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarLinks = document.querySelectorAll('.sidebar a');
+            const sections = document.querySelectorAll('.section');
+            const backToTopButton = document.getElementById('backToTop');
+
+            // Active section highlighting
+            function updateActiveSection() {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (scrollY >= (sectionTop - 200)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            // Back to top button visibility
+            function toggleBackToTopButton() {
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.add('visible');
+                } else {
+                    backToTopButton.classList.remove('visible');
+                }
+            }
+
+            // Event listeners
+            window.addEventListener('scroll', function() {
+                updateActiveSection();
+                toggleBackToTopButton();
+            });
+
+            // Back to top functionality
+            backToTopButton.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Initialize active section on load
+            updateActiveSection();
+            toggleBackToTopButton();
+        });
+    </script>
+</body>
+</html>

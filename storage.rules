@@ -1,0 +1,30 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Robust admin check
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email.lower() in ['admin@angilu.com', 'saiswaroop.mukkanti1999@gmail.com', 'manikantas0180@gmail.com', 'angilu.info@gmail.com'];
+    }
+    
+    // Products images - public read access, admin write access
+    match /products/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    match /categories/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /settings/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // Other storage - authenticated users only
+    match /{allPaths=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
